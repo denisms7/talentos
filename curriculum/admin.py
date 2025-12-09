@@ -20,7 +20,6 @@ class CertificationAdmin(admin.ModelAdmin):
         "certification_type",
         "institution",
         "issue_date",
-        "expiration_date",
     )
     list_filter = ("certification_type", "institution")
     search_fields = ("name", "institution")

@@ -24,6 +24,7 @@ class CertificationType(models.TextChoices):
     POSTDOCTORATE = "postdoctorate", "Pós-doutorado"
     COURSE = "course", "Curso"
     TRAINING = "training", "Treinamento"
+    WORKSHOP = "workshop-Oficina", "Workshop/Oficina"
 
 
 class Skill(models.Model):
@@ -64,13 +65,16 @@ class Certification(models.Model):
         "Instituição",
         max_length=200,
     )
+
+    workload = models.PositiveIntegerField(
+            "Carga Horária (horas)",
+            help_text="Informe a carga horária total em horas.",
+            null=True,
+            blank=True,
+        )
+
     issue_date = models.DateField(
         "Data de Emissão",
-    )
-    expiration_date = models.DateField(
-        "Validade",
-        null=True,
-        blank=True,
     )
 
     skills = models.ManyToManyField(
