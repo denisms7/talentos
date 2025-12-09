@@ -14,7 +14,20 @@ class SkillType(models.TextChoices):
     SOFT = "soft", "Soft Skill"
 
 
+class CertificationType(models.TextChoices):
+    TECHNICAL = "technical", "Curso Técnico"
+    GRADUATION = "graduation", "Graduação"
+    POSTGRADUATION = "postgraduation", "Pós-graduação"
+    MBA = "mba", "MBA"
+    MASTER = "master", "Mestrado"
+    DOCTORATE = "doctorate", "Doutorado"
+    POSTDOCTORATE = "postdoctorate", "Pós-doutorado"
+    COURSE = "course", "Curso"
+    TRAINING = "training", "Treinamento"
+
+
 class Skill(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100)
     skill_type = models.CharField(
         max_length=10,
@@ -30,53 +43,35 @@ class Skill(models.Model):
         return f"{self.name} ({self.get_skill_type_display()})"
 
 
-class Talent(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    job_title = models.CharField(max_length=150)
-    department = models.CharField(max_length=150, blank=True, null=True)
-
-    skills = models.ManyToManyField(
-        Skill,
-        through="TalentSkill",
-        related_name="talents",
-        blank=True,
-    )
-
-    certifications = models.ManyToManyField(
-        "Certification",
-        related_name="talents",
-        blank=True,
-    )
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.user.get_full_name() or self.user.username
-
-
-class TalentSkill(models.Model):
-    talent = models.ForeignKey(Talent, on_delete=models.CASCADE)
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
-    level = models.CharField(
-        max_length=20,
-        choices=SkillLevel.choices,
-        default=SkillLevel.BASIC,
-    )
-
-    class Meta:
-        unique_together = ("talent", "skill")
-        verbose_name = "Habilidade do Servidor"
-        verbose_name_plural = "Habilidades do Servidor"
-
-    def __str__(self):
-        return f"{self.talent} - {self.skill} ({self.get_level_display()})"
-
-
 class Certification(models.Model):
-    name = models.CharField("Nome da Certificação", max_length=200)
-    institution = models.CharField("Instituição", max_length=200)
-    issue_date = models.DateField("Data de Emissão")
-    expiration_date = models.DateField("Validade", null=True, blank=True)
+    created_at = models.DateTimeField(
+        "Data de Cadastro",
+        auto_now_add=True,
+    )
+
+    certification_type = models.CharField(
+        "Tipo de Certificação",
+        max_length=20,
+        choices=CertificationType.choices,
+        default=CertificationType.COURSE,
+    )
+
+    name = models.CharField(
+        "Nome da Certificação",
+        max_length=200,
+    )
+    institution = models.CharField(
+        "Instituição",
+        max_length=200,
+    )
+    issue_date = models.DateField(
+        "Data de Emissão",
+    )
+    expiration_date = models.DateField(
+        "Validade",
+        null=True,
+        blank=True,
+    )
 
     skills = models.ManyToManyField(
         Skill,
@@ -100,6 +95,37 @@ class Certification(models.Model):
     class Meta:
         verbose_name = "Certificação"
         verbose_name_plural = "Certificações"
+        ordering = ("-issue_date",)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.get_certification_type_display()})"
+
+
+class System(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(
+        "Ativo",
+        default=True,
+    )
+    name = models.CharField(
+        "Nome do Sistema",
+        max_length=150,
+        unique=True,
+    )
+    description = models.TextField(
+        "Descrição",
+        blank=True,
+    )
+    owner_sector = models.CharField(
+        "Setor Responsável",
+        max_length=150,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = "Sistema"
+        verbose_name_plural = "Sistemas"
+        ordering = ("name",)
+
+    def __str__(self):
+        return f"{self.name}"
