@@ -15,14 +15,29 @@ class SkillType(models.TextChoices):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField("Categoria Geral", max_length=100, unique=True)
 
     class Meta:
         verbose_name = "Categoria"
         verbose_name_plural = "Categorias"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
+
+
+class SubCategory(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="subcategories")
+    name = models.CharField("Subcategoria", max_length=150)
+
+    class Meta:
+        verbose_name = "Categoria Sub"
+        verbose_name_plural = "Categorias Sub"
+        unique_together = ("category", "name")
+        ordering = ["category__name", "name"]
+
+    def __str__(self):
+        return f"{self.category.name} → {self.name}"
 
 
 class Skill(models.Model):

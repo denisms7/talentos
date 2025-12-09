@@ -1,88 +1,74 @@
 from django.core.management.base import BaseCommand
-from curriculum.models import Category
+from curriculum.models import Category, SubCategory
 
-CATEGORIES = [
-    # Administração Pública
-    "Administração",
-    "Gestão de Pessoas",
-    "Licitações e Compras",
-    "Contabilidade Pública",
-    "Controladoria",
-    "Planejamento e Orçamento",
 
-    # Tecnologia e Dados
-    "Tecnologia da Informação",
-    "Infraestrutura de TI",
-    "Suporte Técnico",
-    "Desenvolvimento de Sistemas",
-    "Banco de Dados",
-    "Análise de Dados",
-    "Segurança da Informação",
-
-    # Educação
-    "Educação Básica",
-    "Pedagogia",
-    "Apoio Escolar",
-
-    # Saúde
-    "Saúde Pública",
-    "Vigilância Sanitária",
-    "Atenção Básica",
-    "Enfermagem",
-    "Saúde Mental",
-
-    # Assistência Social
-    "Assistência Social",
-    "Proteção Social Básica",
-    "Proteção Social Especial",
-    "CRAS",
-    "CREAS",
-
-    # Obras e Infraestrutura
-    "Obras Públicas",
-    "Infraestrutura Urbana",
-    "Engenharia Civil",
-    "Manutenção Predial",
-    "Transporte",
-
-    # Meio Ambiente
-    "Meio Ambiente",
-    "Sustentabilidade",
-    "Agricultura",
-    "Recursos Hídricos",
-    "Resíduos Sólidos",
-
-    # Jurídico
-    "Assessoria Jurídica",
-    "Procuradoria",
-    "Ouvidoria",
-
-    # Finanças
-    "Finanças",
-    "Tributação",
-    "Arrecadação",
-
-    # Outros
-    "Cultura",
-    "Esporte e Lazer",
-    "Comunicação Social",
-    "Turismo",
-    "Logística",
-    "Patrimônio Público",
-]
+CATEGORIES = {
+    "Administração": [
+        "Gestão Pública",
+        "Processos Administrativos",
+        "Compras e Licitações",
+        "Planejamento Estratégico",
+    ],
+    "Saúde": [
+        "Enfermagem",
+        "Fisioterapia",
+        "Saúde Mental",
+        "Atenção Básica",
+    ],
+    "Assistência Social": [
+        "CRAS",
+        "CREAS",
+        "Proteção Social Básica",
+        "Proteção Social Especial",
+    ],
+    "Educação": [
+        "Educação Infantil",
+        "Ensino Fundamental",
+        "Pedagogia",
+        "Educação Especial",
+    ],
+    "Tecnologia": [
+        "Programação",
+        "Desenvolvimento Web",
+        "Redes de Computadores",
+        "Segurança da Informação",
+        "Banco de Dados",
+    ],
+    "Meio Ambiente": [
+        "Sustentabilidade",
+        "Licenciamento Ambiental",
+        "Gestão de Resíduos",
+    ],
+    "Finanças": [
+        "Contabilidade",
+        "Finanças Públicas",
+        "Nota Fiscal e Tributos",
+    ],
+}
 
 
 class Command(BaseCommand):
-    help = "Popula a tabela Category com as áreas de aplicação"
+    help = "Cria categorias e subcategorias padrão"
 
     def handle(self, *args, **kwargs):
-        created_count = 0
+        self.stdout.write(self.style.WARNING("Iniciando cadastro de categorias..."))
 
-        for category in CATEGORIES:
-            obj, created = Category.objects.get_or_create(name=category)
+        for category_name, subcategories in CATEGORIES.items():
+            category, created = Category.objects.get_or_create(name=category_name)
+
             if created:
-                created_count += 1
+                self.stdout.write(self.style.SUCCESS(f"Categoria criada: {category_name}"))
+            else:
+                self.stdout.write(f"Categoria já existe: {category_name}")
 
-        self.stdout.write(self.style.SUCCESS(
-            f"{created_count} categorias cadastradas com sucesso!"
-        ))
+            for subcat_name in subcategories:
+                subcat, sub_created = SubCategory.objects.get_or_create(
+                    category=category,
+                    name=subcat_name
+                )
+                if sub_created:
+                    self.stdout.write(self.style.SUCCESS(f"  Subcategoria criada: {subcat_name}"))
+                else:
+                    self.stdout.write(f"  Subcategoria já existe: {subcat_name}")
+
+        self.stdout.write(self.style.SUCCESS("Processo concluído com sucesso!"))
