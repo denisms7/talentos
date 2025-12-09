@@ -1,46 +1,41 @@
 from django.contrib import admin
+
 from .models import (
-    Talent, Skill, SkillType, SkillLevel,
-    Category, TalentSkill,
-    Certification, SubCategory
+    Skill,
+    Talent,
+    TalentSkill,
+    Certification,
 )
 
 
-# -------------------------------
+# ----------------------------------------------------------------------
 # INLINES
-# -------------------------------
+# ----------------------------------------------------------------------
 
 class TalentSkillInline(admin.TabularInline):
     model = TalentSkill
     extra = 1
-    autocomplete_fields = ["skill"]
+    autocomplete_fields = ("skill",)
+    fields = ("skill", "level")
+    ordering = ("skill__name",)
 
 
 class CertificationInline(admin.TabularInline):
     model = Certification
     extra = 1
-
-class SubCategoryInline(admin.TabularInline):
-    model = SubCategory
-    extra = 1
-
-
-# -------------------------------
-# MODELOS INDIVIDUAIS
-# -------------------------------
-
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("name",)
-    search_fields = ("name",)
-    inlines = [SubCategoryInline]
+    fields = (
+        "name",
+        "institution",
+        "issue_date",
+        "expiration_date",
+        "file",
+        "link",
+    )
 
 
-@admin.register(SubCategory)
-class SubCategoryAdmin(admin.ModelAdmin):
-    list_display = ("name", "category")
-    list_filter = ("category",)
-    search_fields = ("name", "category__name")
+# ----------------------------------------------------------------------
+# SKILL
+# ----------------------------------------------------------------------
 
 @admin.register(Skill)
 class SkillAdmin(admin.ModelAdmin):
@@ -50,61 +45,100 @@ class SkillAdmin(admin.ModelAdmin):
     ordering = ("name",)
 
 
-# -------------------------------
+# ----------------------------------------------------------------------
 # TALENT (PRINCIPAL)
-# -------------------------------
+# ----------------------------------------------------------------------
 
 @admin.register(Talent)
 class TalentAdmin(admin.ModelAdmin):
-    list_display = ("user", "job_title", "department", "created_at")
-    search_fields = ("user__first_name", "user__last_name", "user__username", "job_title")
-    list_filter = ("categories", "department", "created_at")
+    list_display = (
+        "user",
+        "job_title",
+        "department",
+        "created_at",
+    )
+    search_fields = (
+        "user__first_name",
+        "user__last_name",
+        "user__username",
+        "job_title",
+    )
+    list_filter = ("department", "created_at")
     ordering = ("user__first_name",)
 
-    autocomplete_fields = ["user", "categories"]
-
-    inlines = [
-        TalentSkillInline,
-        CertificationInline,
-    ]
-
-    fieldsets = (
-        ("Informações do Servidor", {
-            "fields": ("user", "job_title", "department")
-        }),
-        ("Classificações", {
-            "fields": ("categories",)
-        }),
-        ("Datas", {
-            "fields": ("created_at",),
-        }),
-    )
-
+    autocomplete_fields = ("user",)
     readonly_fields = ("created_at",)
 
+    inlines = (
+        TalentSkillInline,
+        CertificationInline,
+    )
 
-# -------------------------------
-# TALENT ↔ SKILL RELATION
-# -------------------------------
+    fieldsets = (
+        (
+            "Informações do Servidor",
+            {
+                "fields": (
+                    "user",
+                    "job_title",
+                    "department",
+                )
+            },
+        ),
+        (
+            "Datas",
+            {
+                "fields": ("created_at",)
+            },
+        ),
+    )
+
+
+# ----------------------------------------------------------------------
+# TALENT ↔ SKILL (RELAÇÃO)
+# ----------------------------------------------------------------------
 
 @admin.register(TalentSkill)
 class TalentSkillAdmin(admin.ModelAdmin):
     list_display = ("talent", "skill", "level")
     list_filter = ("level", "skill__skill_type")
-    search_fields = ("talent__user__first_name", "skill__name")
-    autocomplete_fields = ["talent", "skill"]
+    search_fields = (
+        "talent__user__first_name",
+        "talent__user__last_name",
+        "skill__name",
+    )
+    autocomplete_fields = ("talent", "skill")
+    ordering = ("talent__user__first_name", "skill__name")
 
 
-# -------------------------------
-# CERTIFICATIONS & EXPERIENCE
-# -------------------------------
-class CertificationInline(admin.TabularInline):
-    model = Certification
-    extra = 1
-    fields = ("name", "institution", "issue_date", "expiration_date", "file", "link")
-
+# ----------------------------------------------------------------------
+# CERTIFICATION
+# ----------------------------------------------------------------------
 
 @admin.register(Certification)
 class CertificationAdmin(admin.ModelAdmin):
-    list_display = ("name", "institution", "issue_date", "expiration_date", "talent")
-    fields = ("talent", "name", "institution", "issue_date", "expiration_date", "file", "link")
+    list_display = (
+        "name",
+        "institution",
+        "issue_date",
+        "expiration_date",
+        "talent",
+    )
+    list_filter = ("institution", "issue_date", "expiration_date")
+    search_fields = (
+        "name",
+        "institution",
+        "talent__user__first_name",
+        "talent__user__last_name",
+    )
+    autocomplete_fields = ("talent",)
+
+    fields = (
+        "talent",
+        "name",
+        "institution",
+        "issue_date",
+        "expiration_date",
+        "file",
+        "link",
+    )

@@ -14,30 +14,7 @@ class SkillType(models.TextChoices):
     SOFT = "soft", "Soft Skill"
 
 
-class Category(models.Model):
-    name = models.CharField("Categoria Geral", max_length=100, unique=True)
 
-    class Meta:
-        verbose_name = "Categoria"
-        verbose_name_plural = "Categorias"
-        ordering = ["name"]
-
-    def __str__(self):
-        return self.name
-
-
-class SubCategory(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="subcategories")
-    name = models.CharField("Subcategoria", max_length=150)
-
-    class Meta:
-        verbose_name = "Categoria Sub"
-        verbose_name_plural = "Categorias Sub"
-        unique_together = ("category", "name")
-        ordering = ["category__name", "name"]
-
-    def __str__(self):
-        return f"{self.category.name} → {self.name}"
 
 
 class Skill(models.Model):
@@ -62,7 +39,6 @@ class Talent(models.Model):
     job_title = models.CharField(max_length=150)
     department = models.CharField(max_length=150, blank=True, null=True)
 
-    categories = models.ManyToManyField(Category, blank=True)
     skills = models.ManyToManyField("Skill", through="TalentSkill", blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
