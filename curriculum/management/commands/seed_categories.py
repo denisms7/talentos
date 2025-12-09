@@ -44,6 +44,18 @@ CATEGORIES = {
         "Finanças Públicas",
         "Nota Fiscal e Tributos",
     ],
+
+    # 💬 NOVA CATEGORIA ADICIONADA
+    "Comunicação": [
+        "Comunicação Institucional",
+        "Marketing",
+        "Produção de Conteúdo",
+        "Design Gráfico",
+        "Mídias Sociais",
+        "Assessoria de Imprensa",
+        "Fotografia e Vídeo",
+        "Retórica",
+    ],
 }
 
 
