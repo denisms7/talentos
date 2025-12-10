@@ -1,0 +1,17 @@
+<h1>Certificados</h1>
+
+<a href="{% url 'profiles:certification_add' %}">
+    Novo certificado
+</a>
+
+<ul>
+    {% for cert in object_list %}
+        <li>
+            {{ cert.name }} — {{ cert.institution }} ({{ cert.issue_date }})
+        </li>
+    {% empty %}
+        <li>Nenhum certificado cadastrado.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'profiles:detail' %}">Voltar ao perfil</a>

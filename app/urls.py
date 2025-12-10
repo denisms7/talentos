@@ -8,5 +8,9 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('admin/', admin.site.urls),
-    path('', include('accounts.urls')),
+    # auth / accounts
+    path("", include("accounts.urls")),
+
+    # profiles
+    path("perfil/", include("profiles.urls")),
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

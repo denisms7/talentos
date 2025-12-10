@@ -109,9 +109,11 @@ class ProfileSkill(models.Model):
         choices=SkillLevel.choices,
     )
     years_experience = models.PositiveSmallIntegerField(default=0)
+    order = models.PositiveIntegerField(default=0)
 
     class Meta:
         unique_together = ("profile", "skill")
+        ordering = ("order",)
 
     def __str__(self):
         return f"{self.skill} - {self.get_level_display()}"
