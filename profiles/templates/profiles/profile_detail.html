@@ -1,28 +1,64 @@
-<h1>Meu Perfil</h1>
+{% extends 'base.html' %}
 
-<p><strong>Usuário:</strong> {{ user.get_full_name|default:user.username }}</p>
-<p><strong>Setor:</strong> {{ object.sector }}</p>
+{% load widget_tweaks %}
 
-<a href="{% url 'profiles:edit' %}">Editar Perfil</a>
+{% block title %}
+    Inicio - Telentos
+{% endblock title %}
 
-<hr>
+{% block content %}
+    {% include "menu.html" %}
 
-<h2>Habilidades</h2>
-<ul>
-    {% for skill in object.skills.all %}
-        <li>
-            {{ skill.skill.name }} —
-            {{ skill.get_level_display }}
-            ({{ skill.years_experience }} anos)
-        </li>
-    {% empty %}
-        <li>Nenhuma habilidade cadastrada.</li>
-    {% endfor %}
-</ul>
 
-<a href="{% url 'profiles:skill_add' %}">Adicionar habilidade</a>
+    <h1>Meu Perfil</h1>
 
-<hr>
+    <p>
+        <strong>Usuário:</strong> {{ user.username }}<br>
+        <strong>Matrícula:</strong> xxx<br>
+        <strong>Nome:</strong> {{ user.get_full_name }}
+    </p>
+    <p><strong>Setor:</strong> {{ object.sector }}</p>
 
-<h2>Certificações</h2>
-<a href="{% url 'profiles:certification_list' %}">Ver certificados</a>
+    <hr>
+
+    <h2>Habilidades</h2>
+    <div class="row g-1">
+        {% for skill in object.skills.all %}
+            <div class="col-sm-6 col-md-2">
+                <div class="card shadow-sm">
+                    <div class="card-body p-2 text-center">
+                        <h6 class="card-title mb-1">{{ skill.skill.name }}</h6>
+                        <p class="card-text small mb-0">
+                            {% if skill.get_level_display == "Básico" %}
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i>
+                            {% elif skill.get_level_display == "Intermediário" %}
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i>
+                            {% elif skill.get_level_display == "Avançado" %}
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+                            {% elif skill.get_level_display == "Especialista" %}
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="card-footer small py-1">
+                        {{ skill.years_experience }} anos
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="small">Nenhuma habilidade cadastrada.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <h2>Certificações</h2>
+
+
+
+
+
+
+{% endblock content %}
