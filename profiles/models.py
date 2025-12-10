@@ -22,6 +22,7 @@ class Profile(models.Model):
         verbose_name="Usuário",
         on_delete=models.CASCADE,
         related_name="profile",
+        unique=True,
     )
     sector = models.CharField(
         verbose_name="Setor Atual",
