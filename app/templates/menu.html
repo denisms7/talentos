@@ -75,7 +75,6 @@
                         </span>
                     </li>
                 </ul>
-
                 <button class="btn btn-outline-danger"
                         type="button"
                         data-bs-toggle="modal"
@@ -86,3 +85,30 @@
         </div>
     </div>
 </nav>
+
+<!-- Modal de confirmação de saída -->
+<div class="modal" id="sair" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deseja mesmo sair?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    {{ user.get_full_name|default:user.username }}<br>
+                    Confirme para sair do sistema
+                </p>
+            </div>
+            <div class="modal-footer">
+                <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-door-closed"></i> Sair
+                    </button>
+                </form>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
