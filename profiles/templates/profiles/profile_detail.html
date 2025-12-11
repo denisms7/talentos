@@ -22,8 +22,8 @@
 
     {% include "menu.html" %}
 
-    <h2 class="mt-5">👤 Meu Perfil</h2>
-    <hr>
+    <h2 class="mt-5 mb-3 mb-3">👤 Meu Perfil</h2>
+
 
     <p>
         <strong>Usuário:</strong> {{ user.username }}
@@ -34,8 +34,8 @@
         <strong class="ms-3">Nome:</strong> {{ user.get_full_name }}<br>
     </p> 
 
-    <h2 class="mt-5">🧠 Habilidades</h2>
-    <hr>
+    <h2 class="mt-5 mb-3">🧠 Habilidades</h2>
+
 
     <div class="row g-1">
         {% for skill in object.skills.all %}
@@ -69,8 +69,8 @@
         {% endfor %}
     </div>
 
-    <h2 class="mt-5">📜 Certificações</h2>
-    <hr>
+    <h2 class="mt-5 mb-3">📜 Certificações</h2>
+
 
     {% if object.certifications.all %}
 
@@ -135,8 +135,8 @@
         </div>
     {% endif %}
     
-    <h2 class="mt-5">🖥️ Sistemas</h2>
-    <hr>
+    <h2 class="mt-5 mb-3">🖥️ Sistemas</h2>
+
 
     <div class="g-1">
         {% for sys in object.systems.all %}
@@ -161,8 +161,8 @@
         {% endfor %}
     </div>
 
-    <h2 class="mt-5">🧩 Banco de Talentos</h2>
-    <hr>
+    <h2 class="mt-5 mb-3">🧩 Banco de Talentos</h2>
+
 
     <div class="">
         <p class="lead">
