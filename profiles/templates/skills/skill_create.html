@@ -29,7 +29,7 @@
 
             <div class="col-sm-6 col-md-2 mb-3">
                 <label for="{{ form.level.id_for_label }}" class="form-label">{{ form.level.label }}: {% if form.level.field.required %}<span class="text-danger">*</span>{% endif %}</label>
-                {% render_field form.level class="form-control" %}
+                {% render_field form.level class="form-select" %}
                 {% for error in form.level.errors %}
                     <span class="text-danger">{{ error }}</span>
                 {% endfor %}
