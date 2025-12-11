@@ -1,11 +1,11 @@
 from django.db import models
 
 
-class SkillLevel(models.TextChoices):
-    BASIC = "basic", "Básico"
-    INTERMEDIATE = "intermediate", "Intermediário"
-    ADVANCED = "advanced", "Avançado"
-    EXPERT = "expert", "Especialista"
+class SkillLevel(models.IntegerChoices):
+    BASIC = 1, "Básico"
+    INTERMEDIATE = 2, "Intermediário"
+    ADVANCED = 3, "Avançado"
+    EXPERT = 4, "Especialista"
 
 
 class SkillType(models.TextChoices):

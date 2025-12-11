@@ -91,14 +91,15 @@ class ProfileSkill(models.Model):
         related_name="profiles",
         verbose_name="Habilidade",
     )
-    level = models.CharField(
-        max_length=20,
+    level = models.IntegerField(
         choices=SkillLevel.choices,
-        verbose_name="Nivel",
+        verbose_name="Nível",
+        default=SkillLevel.BASIC
     )
     years_experience = models.PositiveSmallIntegerField(
         verbose_name="Anos de Experiência",
-        default=0)
+        default=0
+    )
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
