@@ -21,6 +21,7 @@ class Profile(models.Model):
     position = models.CharField(verbose_name="Cargo", max_length=150, blank=True,)
     registration = models.CharField(verbose_name="Matrícula", max_length=10, blank=True, unique=True,)
     admission_date = models.DateField(verbose_name="Admissão", blank=True, null=True,)
+    public = models.BooleanField(verbose_name="Perfil Público", default=True)
 
     def __str__(self):
         full_name = self.user.get_full_name().strip()
