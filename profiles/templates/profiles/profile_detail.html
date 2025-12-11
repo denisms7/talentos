@@ -10,6 +10,13 @@
     <section class="mt-5">
         <h2 class="mb-3">👤 Meu Perfil</h2>
         <p class="mb-0">
+            <strong>Perfil Público:</strong>
+            {% if object.public %}
+                <span class="badge bg-success">Público</span>
+            {% else %}
+                <span class="badge bg-secondary">Privado</span>
+            {% endif %}
+            <br>
             <strong>Usuário:</strong> {{ user.username }}
             <strong class="ms-3">Cargo:</strong> {{ object.position }}<br>
             <strong>Admissão:</strong> {{ object.admission_date|date:"d/m/Y" }}
