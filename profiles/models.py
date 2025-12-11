@@ -105,8 +105,6 @@ class ProfileSkill(models.Model):
         return f"{self.skill} - {self.get_level_display()}"
 
 
-
-
 class ProfileSystem(models.Model):
     profile = models.ForeignKey(
         Profile,
@@ -120,10 +118,9 @@ class ProfileSystem(models.Model):
         related_name="profiles",
         verbose_name="Sistema",
     )
-    access_level = models.CharField(
-        "Nível de Acesso",
-        max_length=50,
-        blank=True,
+    level = models.CharField(
+        max_length=20,
+        choices=SkillLevel.choices,
     )
     notes = models.TextField(
         "Observações",

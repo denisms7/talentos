@@ -23,6 +23,7 @@
     {% include "menu.html" %}
 
     <h2>👤 Meu Perfil</h2>
+    <hr>
 
     <p>
         <strong>Usuário:</strong> {{ user.username }}
@@ -33,9 +34,9 @@
         <strong class="ms-3">Nome:</strong> {{ user.get_full_name }}<br>
     </p> 
 
+    <h2>🧠 Habilidades</h2>
     <hr>
 
-    <h2>🧠 Habilidades</h2>
     <div class="row g-1">
         {% for skill in object.skills.all %}
 
@@ -68,9 +69,8 @@
         {% endfor %}
     </div>
 
-    <hr>
-
     <h2>📜 Certificações</h2>
+    <hr>
 
     {% if object.certifications.all %}
 
@@ -134,46 +134,36 @@
             <p class="small">Nenhuma certificação cadastrada.</p>
         </div>
     {% endif %}
-
-
-
-    <hr>
-
+    
     <h2>🖥️ Sistemas</h2>
-
-
-<div class="g-1">
-    {% for sys in object.systems.all %}
-
-        <div class="card shadow-sm" style="width: fit-content; display: inline-block; margin: 4px;">
-            <div class="card-body p-2 text-center">
-                <h6 class="card-title mb-1">{{ sys.system.name }}</h6>
-            </div>
-        </div>
-
-    {% empty %}
-        <p class="small">Nenhuma habilidade em sistema cadastrada.</p>
-    {% endfor %}
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <hr>
+
+    <div class="g-1">
+        {% for sys in object.systems.all %}
+            <div class="card shadow-sm" style="width: fit-content; display: inline-block; margin: 4px;">
+                <div class="card-body p-2 text-center">
+                    <h6 class="card-title mb-1">{{ sys.system.name }}</h6>
+                        <p class="card-text small mb-0">
+                            {% if sys.get_level_display == "Básico" %}
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i>
+                            {% elif sys.get_level_display == "Intermediário" %}
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i>
+                            {% elif sys.get_level_display == "Avançado" %}
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+                            {% elif sys.get_level_display == "Especialista" %}
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            {% endif %}
+                        </p>
+                </div>
+            </div>
+        {% empty %}
+            <p class="small">Nenhuma habilidade em sistema cadastrada.</p>
+        {% endfor %}
+    </div>
 
     <h2>🧩 Banco de Talentos</h2>
+    <hr>
+
     <div class="">
         <p class="lead">
             A criação de um Banco de Talentos é fundamental para otimizar a gestão de pessoas e fortalecer a estratégia organizacional. Ele mantém um registro estruturado e atualizado de profissionais com diferentes habilidades, formações e experiências, facilitando a identificação rápida de talentos para oportunidades internas e demandas futuras.
