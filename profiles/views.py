@@ -157,13 +157,7 @@ class CertificationDeleteView(LoginRequiredMixin, PermissionRequiredMixin, Delet
             return redirect(self.success_url)
 
 
-
-
-
-
-# ================================ SKILLS ================================
-
-
+# ===================================== SKILLS =====================================
 class ProfileSkillListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = "skills/skill_list.html"
     context_object_name = "skills"
@@ -204,23 +198,24 @@ class ProfileSkillListView(LoginRequiredMixin, PermissionRequiredMixin, ListView
         return context
 
 
-
-
-
-
-
-
 class ProfileSkillCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProfileSkill
     form_class = ProfileSkillForm
     template_name = "skills/skill_create.html"
-    success_url = reverse_lazy("profiles:skills_list")
+    success_url = reverse_lazy("profiles:habilidades_list")
     permission_required = "register.add_profileskill"
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["profile"] = self.request.user.profile
+        return kwargs
+
     def form_valid(self, form):
-        form.instance.profile = self.request.user.profile
+        instance = form.save(commit=False)
+        instance.profile = self.request.user.profile
+        instance.save()
         messages.success(self.request, "Habilidade adicionada com sucesso!")
-        return super().form_valid(form)
+        return redirect(self.success_url)
 
     def form_invalid(self, form):
         messages.error(
@@ -236,6 +231,11 @@ class ProfileSkillDetailView(LoginRequiredMixin, PermissionRequiredMixin, Detail
     context_object_name = "skill"
     permission_required = "register.view_profileskill"
 
+    def get_queryset(self):
+        """Permite acessar apenas as skills do próprio usuário."""
+        user_profile = self.request.user.profile
+        return ProfileSkill.objects.filter(profile=user_profile)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = ProfileSkillDetailForm(instance=self.object)
@@ -248,25 +248,31 @@ class ProfileSkillUpdateView(LoginRequiredMixin, PermissionRequiredMixin, Update
     form_class = ProfileSkillForm
     template_name = "skills/skill_create.html"
     context_object_name = "skill"
-    success_url = reverse_lazy("profiles:skills_list")
+    success_url = reverse_lazy("profiles:habilidades_list")
     permission_required = "register.change_profileskill"
 
     def get_queryset(self):
+        """Permite editar apenas skills pertencentes ao usuário logado."""
         return ProfileSkill.objects.filter(profile=self.request.user.profile)
 
     def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.profile = self.request.user.profile  # segurança extra
+        instance.save()
+
         messages.success(self.request, "Habilidade atualizada com sucesso!")
-        return super().form_valid(form)
+        return redirect(self.success_url)
 
 
 class ProfileSkillDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = ProfileSkill
     template_name = "skills/profile_skill_delete.html"
     context_object_name = "skill"
-    success_url = reverse_lazy("profiles:skills_list")
+    success_url = reverse_lazy("profiles:habilidades_list")
     permission_required = "register.delete_profileskill"
 
     def get_queryset(self):
+        """Permite deletar apenas skills pertencentes ao usuário logado."""
         return ProfileSkill.objects.filter(profile=self.request.user.profile)
 
     def delete(self, request, *args, **kwargs):
@@ -279,20 +285,19 @@ class ProfileSkillDeleteView(LoginRequiredMixin, PermissionRequiredMixin, Delete
         except ProtectedError:
             messages.warning(
                 request,
-                "Esta habilidade não pode ser deletada pois possui vínculos protegidos."
+                "Esta habilidade não pode ser removida pois possui vínculos protegidos."
             )
 
         except RestrictedError:
             messages.warning(
                 request,
-                "Esta habilidade possui vínculos restritos e não pode ser deletada."
+                "Esta habilidade possui vínculos restritos e não pode ser removida."
             )
 
         except Exception:
             messages.error(
                 request,
-                "Ocorreu um erro ao tentar deletar a habilidade."
+                "Ocorreu um erro inesperado ao tentar excluir a habilidade."
             )
 
         return redirect(self.success_url)
-

@@ -19,23 +19,23 @@
 
                 <div class="input-group">
 
-                    {# FILTRO POR NÍVEL #}
-                    <select name="level" class="form-select">
-                        <option value="">Todos Níveis</option>
-                        {% for value, label in levels %}
-                            <option value="{{ value }}"
-                                {% if request.GET.level == value %}selected{% endif %}>
-                                {{ label }}
-                            </option>
-                        {% endfor %}
-                    </select>
-
                     {# FILTRO POR TIPO DE SKILL #}
                     <select name="skill_type" class="form-select">
                         <option value="">Todos Tipos</option>
                         {% for value, label in skill_types %}
                             <option value="{{ value }}"
                                 {% if request.GET.skill_type == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    {# FILTRO POR NÍVEL #}
+                    <select name="level" class="form-select">
+                        <option value="">Todos Níveis</option>
+                        {% for value, label in levels %}
+                            <option value="{{ value }}"
+                                {% if request.GET.level == value %}selected{% endif %}>
                                 {{ label }}
                             </option>
                         {% endfor %}
@@ -95,7 +95,7 @@
 
                             <td class="text-end">
                                 <a class="btn btn-sm btn-info"
-                                   href="{% url 'profiles:skill_detail' skill.pk %}"
+                                   href="{% url 'profiles:habilidades_detail' skill.pk %}"
                                    title="Detalhes">
                                     <i class="bi bi-search"></i>
                                 </a>

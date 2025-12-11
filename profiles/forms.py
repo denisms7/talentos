@@ -37,43 +37,40 @@ class CertificationDetail_ModelForm(forms.ModelForm):
 
 
 class ProfileSkillForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.profile = kwargs.pop("profile", None)
+        super().__init__(*args, **kwargs)
+
     class Meta:
         model = ProfileSkill
         fields = [
             "skill",
             "level",
             "years_experience",
-            "order",
         ]
-
         widgets = {
             "skill": forms.Select(attrs={"class": "form-select"}),
             "level": forms.Select(attrs={"class": "form-select"}),
-            "years_experience": forms.NumberInput(
-                attrs={"class": "form-control", "min": 0}
-            ),
-            "order": forms.NumberInput(
-                attrs={"class": "form-control", "min": 0}
-            ),
+            "years_experience": forms.NumberInput(attrs={"class": "form-control", "min": 0}),
         }
 
     def clean(self):
         cleaned_data = super().clean()
         skill = cleaned_data.get("skill")
 
-        # Evita duplicidade do unique_together(profile, skill)
-        if self.instance.pk is None:  # Criando
-            profile = self.initial.get("profile") or self.instance.profile
-        else:
-            profile = self.instance.profile
+        if not self.profile:
+            raise forms.ValidationError("Perfil não definido no formulário.")
 
         if ProfileSkill.objects.filter(
-            profile=profile,
+            profile=self.profile,
             skill=skill
         ).exclude(pk=self.instance.pk).exists():
-            raise forms.ValidationError("Essa habilidade já está cadastrada para este perfil.")
+            raise forms.ValidationError(
+                "Essa habilidade já está cadastrada para este perfil."
+            )
 
         return cleaned_data
+
 
 
 class ProfileSkillDetailForm(forms.ModelForm):

@@ -89,12 +89,16 @@ class ProfileSkill(models.Model):
         Skill,
         on_delete=models.CASCADE,
         related_name="profiles",
+        verbose_name="Habilidade",
     )
     level = models.CharField(
         max_length=20,
         choices=SkillLevel.choices,
+        verbose_name="Nivel",
     )
-    years_experience = models.PositiveSmallIntegerField(default=0)
+    years_experience = models.PositiveSmallIntegerField(
+        verbose_name="Anos de Experiência",
+        default=0)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
