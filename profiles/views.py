@@ -5,24 +5,10 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.db.models.deletion import ProtectedError, RestrictedError
 from django.views.generic import (DetailView, CreateView, UpdateView, ListView, DeleteView,)
-from .models import Profile, Certification, CertificationType, ProfileSkill, SkillLevel
+from .models import Certification, CertificationType, ProfileSkill, SkillLevel
 from skills.models import SkillType
 from .forms import CertificationForm, CertificationDetail_ModelForm
 from .forms import ProfileSkillForm, ProfileSkillDetailForm
-
-
-class ProfileDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
-    model = Profile
-    template_name = "profiles/profile_detail.html"
-    permission_required = 'register.view_certification'
-
-    def get_object(self):
-        return self.request.user.profile
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["certifications"] = self.object.certifications.order_by("-issue_date")
-        return context
 
 
 class CertificationListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):

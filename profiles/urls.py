@@ -1,7 +1,6 @@
 from django.urls import path
 
 from .views import (
-    ProfileDetailView,
     CertificationListView,
     CertificationCreateView,
     CertificationDetailView,
@@ -19,9 +18,6 @@ from .views import (
 app_name = "profiles"
 
 urlpatterns = [
-    # ===== PERFIL =====
-    path("", ProfileDetailView.as_view(), name="home"),
-
     #  Certificados
     path("certificados/", CertificationListView.as_view(), name="certificados_list"),
     path("certificados/<int:pk>/", CertificationDetailView.as_view(), name="certificados_det"),
