@@ -18,10 +18,10 @@
             {% endif %}
             <br>
             <strong>Usuário:</strong> {{ user.username }}
-            <strong class="ms-3">Cargo:</strong> {{ object.position }}<br>
-            <strong>Admissão:</strong> {{ object.admission_date|date:"d/m/Y" }}
-            <strong class="ms-3">Matrícula:</strong> {{ object.registration }}
-            <strong class="ms-3">Nome:</strong> {{ user.get_full_name }}
+            <strong class="ms-3">Cargo:</strong> {{ object.position|default:"Preencha o Perfil" }}<br>
+            <strong>Admissão:</strong> {{ object.admission_date|date:"d/m/Y"|default:"Preencha o Perfil" }}
+            <strong class="ms-3">Matrícula:</strong> {{ object.registration|default:"Preencha o Perfil" }}
+            <strong class="ms-3">Nome:</strong> {{ user.get_full_name|default:"Fale com Administrador" }}
         </p>
     </section>
 

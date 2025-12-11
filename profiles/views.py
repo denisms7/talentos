@@ -2,13 +2,28 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib import messages
 from django.db.models import Q
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.db.models.deletion import ProtectedError, RestrictedError
 from django.views.generic import (DetailView, CreateView, UpdateView, ListView, DeleteView,)
-from .models import Certification, CertificationType, ProfileSkill, SkillLevel
+from .models import Certification, CertificationType, ProfileSkill, SkillLevel, Profile
 from skills.models import SkillType
 from .forms import CertificationForm, CertificationDetail_ModelForm
-from .forms import ProfileSkillForm, ProfileSkillDetailForm
+from .forms import ProfileSkillForm, ProfileSkillDetailForm, ProfileForm
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = "profiles/profile_form.html"
+    success_url = reverse_lazy("profiles:perfil_edit")
+
+    def get_object(self, queryset=None):
+        """Retorna apenas o profile do usuário logado."""
+        return get_object_or_404(Profile, user=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, "Perfil atualizado com sucesso!")
+        return super().form_valid(form)
 
 
 class CertificationListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):

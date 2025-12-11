@@ -1,5 +1,22 @@
 from django import forms
-from .models import ProfileSkill, Certification
+from .models import ProfileSkill, Certification, Profile
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = [
+            "position",
+            "registration",
+            "admission_date",
+            "public",
+        ]
+        widgets = {
+            "admission_date": forms.DateInput(
+                format="%Y-%m-%d",
+                attrs={"type": "date"}
+            ),
+        }
 
 
 class CertificationForm(forms.ModelForm):
