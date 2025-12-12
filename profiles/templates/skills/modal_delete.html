@@ -1,5 +1,5 @@
-<div class="modal fade" id="delete-{{ item.pk }}" tabindex="-1">
-    <div class="modal-dialog modal-md">  <!-- Modal menor -->
+<div class="modal fade" id="delete-{{ skill.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
 
             <!-- Cabeçalho vermelho -->
@@ -12,21 +12,13 @@
             </div>
 
             <div class="modal-body">
-                <p class="mb-2">
-                    Deseja excluir o registro?
-                </p>
-
-                <p class="small">
-                    <b>Emissão:</b> {{ skill.issue_date }}<br>
-                    <b>Instituição:</b> {{ skill.institution }}<br>
-                    <b>Certificação:</b> {{ skill.name }}<br>
-                </p>
-
+                <p class="mb-2">Deseja excluir o registro?</p>
+                <p class="small"><b>Habilidade:</b> {{ skill.skill.name }}</p>
                 <p class="small text-muted mb-0">* Esta ação não poderá ser desfeita</p>
             </div>
 
             <div class="modal-footer">
-                <form method="post" action="{% url 'profiles:certificados_delete' skill.pk %}">
+                <form method="post" action="{% url 'profiles:habilidades_delete' skill.pk %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">
                         <i class="bi bi-check-lg"></i>
