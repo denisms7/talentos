@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Perfis Públicos{% endblock title %}
+
+{% block content %}
+
+<h2>👥 Perfis Públicos</h2>
+
+<form method="get" class="my-4">
+    <div class="input-group">
+        <input
+            type="text"
+            name="q"
+            class="form-control"
+            placeholder="Buscar por nome..."
+            value="{{ request.GET.q }}"
+        >
+        <button class="btn btn-primary" type="submit">Buscar</button>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-sm table-striped table-hover align-middle">
+        <thead class="table-primary">
+            <tr>
+                <th>Nome</th>
+                <th>Admissão</th>
+                <th>Função</th>
+                <th style="width: 120px;" class="text-end"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for profile in profiles %}
+                <tr>
+                    <td>{{ profile.user.get_full_name|default:profile.user.username }}</td>
+                    <td>{{ profile.admission_date|default:"Nada Informado" }}</td>
+                    <td>{{ profile.function|default:"Nada Informado" }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'profiles:perfis_publicos_det' profile.pk %}" class="btn btn-sm btn-outline-primary">
+                            Ver Perfil
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <div class="alert alert-info mb-0">
+                            Nenhum perfil público encontrado.
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% include "pagination.html" %}
+
+{% endblock content %}

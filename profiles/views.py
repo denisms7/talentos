@@ -27,6 +27,41 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
+class PublicProfileListView(ListView):
+    model = Profile
+    template_name = "profiles/profile_list.html"
+    context_object_name = "profiles"
+    paginate_by = 20
+
+    def get_queryset(self):
+        queryset = Profile.objects.filter(public=True).select_related("user")
+
+        query = self.request.GET.get("q", "").strip()
+
+        if query:
+            queryset = queryset.filter(
+                Q(user__first_name__icontains=query)
+                | Q(user__last_name__icontains=query)
+                | Q(user__username__icontains=query)
+            )
+
+        return queryset.order_by("user__first_name", "user__last_name")
+
+
+class ProfilePublicDetailView(DetailView):
+    model = Profile
+    template_name = "profiles/profile_public.html"
+
+    def get_object(self, queryset=None):
+        profile = get_object_or_404(Profile, pk=self.kwargs["pk"])
+
+        if not profile.public:
+            messages.error(self.request, "Este perfil não é público.")
+            return redirect(reverse_lazy("home"))
+        return profile
+
+
+
 class CertificationListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = "certification/certification_list.html"
     context_object_name = "certifications"

@@ -19,7 +19,9 @@
         <div>
             <strong>Admissão:</strong> {{ object.admission_date|date:"d/m/Y"|default:"Preencha o Perfil" }}
             <strong class="ms-3">Matrícula:</strong> {{ object.registration|default:"Preencha o Perfil" }}
-            <strong class="ms-3">Usuário:</strong> {{ user.username }}
+            {% if user.username == object.user.username %}
+                <strong class="ms-3">Usuário:</strong> {{ user.username }}
+            {% endif %}
         </div>
     </section>
 

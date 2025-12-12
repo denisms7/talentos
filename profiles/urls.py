@@ -2,6 +2,8 @@ from django.urls import path
 
 from .views import (
     ProfileUpdateView,
+    ProfilePublicDetailView,
+    PublicProfileListView,
 
     # Certificados
     CertificationListView,
@@ -30,6 +32,8 @@ app_name = "profiles"
 urlpatterns = [
     # Perfil
     path("perfil/", ProfileUpdateView.as_view(), name="perfil_edit"),
+    path("perfis/publicos/", PublicProfileListView.as_view(), name="perfis_publicos"),
+    path("perfis/publicos/<int:pk>/", ProfilePublicDetailView.as_view(), name="perfis_publicos_det"),
 
     # Certificados
     path("certificados/", CertificationListView.as_view(), name="certificados_list"),
