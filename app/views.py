@@ -1,10 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import DetailView
 from profiles.models import Profile
-
-
-class HomeDetailView(TemplateView):
-    template_name = "home/home.html"
 
 
 class ProfileDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):

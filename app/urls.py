@@ -2,15 +2,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from .views import ProfileDetailView, HomeDetailView
+from .views import ProfileDetailView
 
 
 urlpatterns = [
 
-    path("", HomeDetailView.as_view(), name="index"),
-    path("inicio/", ProfileDetailView.as_view(), name="home"),
+    path("", ProfileDetailView.as_view(), name="home"),
 
     path('admin/', admin.site.urls),
+
     # auth / accounts
     path("accounts/", include("user.urls")),
 

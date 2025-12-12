@@ -13,14 +13,13 @@
 </head>
 
 <body class="text-bg-light">
-    <div class="container">
-        {% block notification %}
-            {% include "alerts.html" %}
-        {% endblock notification %}
 
+    {% include "alerts.html" %}
+    {% include "menu.html" %}
+    
+    <div class="container">
         {% block content %}
         {% endblock content %}
-
         {% block footer %}
         {% endblock footer %}
     </div>
