@@ -44,11 +44,12 @@
                         class="card shadow-sm h-100"
                         {% if skill.notes %}
                         data-bs-toggle="popover"
-                        data-bs-trigger="click"
                         data-bs-html="true"
                         title="Observações"
                         data-bs-content="{{ skill.notes|default:'Sem notas cadastradas.' }}"
                         style="cursor: pointer;"
+                        data-bs-trigger="focus"
+                        tabindex="0"
                         {% endif %}
                     >
                         <div class="card-body text-center p-2">
@@ -84,11 +85,12 @@
                         class="card shadow-sm text-center p-2"
                         {% if sys.notes %}
                         data-bs-toggle="popover"
-                        data-bs-trigger="click"
                         data-bs-html="true"
                         title="Observações"
                         data-bs-content="{{ sys.notes|default:'Sem notas cadastradas.' }}"
                         style="cursor: pointer;"
+                        data-bs-trigger="focus"
+                        tabindex="0"
                         {% endif %}
                     >
                         <h6 class="card-title mb-1">{{ sys.system.name }}</h6>

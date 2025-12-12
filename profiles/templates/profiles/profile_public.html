@@ -35,16 +35,28 @@
         </p>
     </section>
 
+
     <section class="mt-5">
         <h2 class="mb-3">🧠 Habilidades</h2>
         <div class="row g-3">
             {% for skill in object.skills.all %}
                 <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-                    <div class="card shadow-sm h-100">
+                    <div 
+                        class="card shadow-sm h-100"
+                        {% if skill.notes %}
+                        data-bs-toggle="popover"
+                        data-bs-html="true"
+                        title="Observações"
+                        data-bs-content="{{ skill.notes|default:'Sem notas cadastradas.' }}"
+                        style="cursor: pointer;"
+                        data-bs-trigger="focus"
+                        tabindex="0"
+                        {% endif %}
+                    >
                         <div class="card-body text-center p-2">
                             <h6 class="card-title mb-1">{{ skill.skill.name }}</h6>
+
                             <p class="card-text mb-0">
-                                <i class="bi bi-star-fill text-warning"></i>
                                 {% for i in "1234"|make_list %}
                                     {% if forloop.counter <= skill.level %}
                                         <i class="bi bi-star-fill text-warning"></i>
@@ -54,9 +66,7 @@
                                 {% endfor %}
                             </p>
                         </div>
-                        <div class="card-footer text-center py-1 small d-none">
-                            {{ skill.years_experience }} anos
-                        </div>
+
                     </div>
                 </div>
             {% empty %}
@@ -72,12 +82,22 @@
         <div class="row g-3">
             {% for sys in object.systems.all %}
                 <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-                    <div class="card shadow-sm text-center p-2">
+                    <div 
+                        class="card shadow-sm text-center p-2"
+                        {% if sys.notes %}
+                        data-bs-toggle="popover"
+                        data-bs-html="true"
+                        title="Observações"
+                        data-bs-content="{{ sys.notes|default:'Sem notas cadastradas.' }}"
+                        style="cursor: pointer;"
+                        data-bs-trigger="focus"
+                        tabindex="0"
+                        {% endif %}
+                    >
                         <h6 class="card-title mb-1">{{ sys.system.name }}</h6>
+
                         <p class="card-text mb-0">
-                            {# Estrela fixa #}
                             <i class="bi bi-star-fill text-warning"></i>
-                            {# Loop das estrelas #}
                             {% for i in "1234"|make_list %}
                                 {% if forloop.counter <= sys.level %}
                                     <i class="bi bi-star-fill text-warning"></i>
@@ -93,7 +113,6 @@
             {% endfor %}
         </div>
     </section>
-
 
     <section class="mt-5">
         <h2 class="mb-3">📜 Certificações</h2>
@@ -146,5 +165,14 @@
             <p class="small">Nenhuma certificação cadastrada.</p>
         {% endif %}
     </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const popovers = document.querySelectorAll('[data-bs-toggle="popover"]');
+        popovers.forEach(el => {
+            new bootstrap.Popover(el);
+        });
+    });
+</script>
 
 {% endblock content %}
