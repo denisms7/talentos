@@ -10,18 +10,27 @@
     Consulte os perfis profissionais disponibilizados publicamente pelos servidores.
 </p>
 
+
+
 <form method="get" class="my-4">
-    <div class="input-group">
-        <input
-            type="text"
-            name="q"
-            class="form-control"
-            placeholder="Buscar por nome..."
-            value="{{ request.GET.q }}"
-        >
-        <button class="btn btn-primary" type="submit">Buscar</button>
+    <div class="row mb-3">
+        <div class="col-12 col-sm-12 col-md-6">
+            <label class="form-label">Pesquisar:</label>
+            <div class="input-group">
+                <input
+                    type="text"
+                    name="q"
+                    class="form-control"
+                    placeholder="Buscar por nome..."
+                    value="{{ request.GET.q }}"
+                >
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </div>
+        </div>
     </div>
 </form>
+
+{% if profiles %}
 
 <div class="table-responsive">
     <table class="table table-sm table-striped table-hover align-middle">
@@ -47,7 +56,7 @@
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="3" class="text-center">
+                    <td colspan="4" class="text-center">
                         <div class="alert alert-info mb-0">
                             Nenhum perfil público encontrado.
                         </div>
@@ -57,6 +66,16 @@
         </tbody>
     </table>
 </div>
+
+{% else %}
+        <div class="text-center my-4">
+            <div class="col-12 col-md-6 mx-auto">
+                <div class="alert alert-info d-flex justify-content-center align-items-center gap-2" role="alert">
+                    <span>Nenhum perfil público encontrado.</span>
+                </div>
+            </div>
+        </div>
+{% endif %}
 
 {% include "pagination.html" %}
 
