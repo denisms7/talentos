@@ -7,11 +7,10 @@
 
     {% include "menu.html" %}
 
-    <section class="mt-5">
-        <h2 class="mb-3">👤 Meu Perfil</h2>
+    <section class="mt-3">
+        <h2 class="mb-3">👤 {{ user.get_full_name|default:"Sem nome - fale com administrador" }}</h2>
         <p class="mb-0">
-            <strong>Usuário:</strong> {{ user.username }}
-            <strong class="ms-3">Perfil Público:</strong>
+            <strong>Perfil:</strong>
             {% if object.public %}
                 <span class="badge bg-success">Público</span>
             {% else %}
@@ -20,7 +19,7 @@
             <br>
             <strong>Admissão:</strong> {{ object.admission_date|date:"d/m/Y"|default:"Preencha o Perfil" }}
             <strong class="ms-3">Matrícula:</strong> {{ object.registration|default:"Preencha o Perfil" }}
-            <strong class="ms-3">Nome:</strong> {{ user.get_full_name|default:"Fale com Administrador" }}
+            <strong class="ms-3">Usuário:</strong> {{ user.username }}
         </p>
     </section>
 
