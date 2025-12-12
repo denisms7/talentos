@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+    Sistemas
+{% endblock title %}
+
+{% block content %}
+
+    {% include "menu.html" %}
+
+    <h2>🖥️ Sistemas</h2>
+
+    <form method="get" class="my-3">
+        <div class="row">
+            <div class="col-12 col-md-9">
+
+                <label class="form-label">Filtros:</label>
+
+                <div class="input-group">
+
+                    {# FILTRO POR NÍVEL #}
+                    <select name="level" class="form-select">
+                        <option value="">Todos Níveis</option>
+                        {% for value, label in levels %}
+                            <option value="{{ value }}"
+                                {% if request.GET.level == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    {# PESQUISA POR SISTEMA #}
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ request.GET.q }}"
+                        class="form-control"
+                        placeholder="Sistema"
+                    >
+
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+
+                    {# BOTÃO LIMPAR #}
+                    {% if request.GET.q or request.GET.level %}
+                        <a href="{% url 'profiles:sistemas_list' %}" class="btn btn-warning" title="Limpar filtros">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="col-12 col-md-3 align-self-end text-sm-center text-md-end">
+                <a class="btn btn-success" href="{% url 'profiles:sistemas_create' %}">
+                    <i class="bi bi-window-plus"></i>
+                    Novo
+                </a>
+            </div>
+        </div>
+    </form>
+
+    {% if systems %}
+        <div class="table-responsive">
+            <table class="table table-sm align-middle table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Sistema</th>
+                        <th>Nível</th>
+                        <th>Observações</th>
+                        <th class="text-end"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in systems %}
+                        <tr>
+                            <td>{{ item.system.name }}</td>
+                            <td>{{ item.get_level_display }}</td>
+                            <td class="text-muted">
+                                {% if item.notes %}
+                                    {{ item.notes|truncatewords:12 }}
+                                {% else %}
+                                    <span class="text-secondary">—</span>
+                                {% endif %}
+                            </td>
+
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-info"
+                                   href="{% url 'profiles:sistemas_detail' item.pk %}"
+                                   title="Detalhes">
+                                    <i class="bi bi-search"></i>
+                                </a>
+
+                                <button title="Deletar" class="btn btn-sm btn-danger"
+                                        data-bs-toggle="modal" data-bs-target="#delete-{{item.pk}}">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </td>
+
+                            {% include "systems/modal_delete.html" %}
+                        </tr>
+
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-muted text-center py-3">
+                                Nenhum sistema cadastrado.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+        <div class="text-center my-4">
+            <div class="col-12 col-md-6 mx-auto">
+                <div class="alert alert-info d-flex justify-content-center align-items-center gap-2" role="alert">
+                    <span>Nenhum sistema cadastrado.</span>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% include "pagination.html" %}
+
+{% endblock content %}

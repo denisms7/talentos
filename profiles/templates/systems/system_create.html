@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %}
+    Sistemas
+{% endblock title %}
+
+{% block content %}
+    {% include "menu.html" %}
+
+    <h2>🖥️ Adicionar Sistema</h2>
+
+    <div class="container mt-4">
+
+        <form class="row" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Sistema -->
+            <div class="col-sm-12 col-md-8 mb-3">
+                <label for="{{ form.system.id_for_label }}" class="form-label">
+                    {{ form.system.label }}:
+                    {% if form.system.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {% render_field form.system class="form-select" %}
+                {% for error in form.system.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+                <div class="invalid-feedback">
+                    Este campo é obrigatório
+                </div>
+            </div>
+
+            <!-- Nível -->
+            <div class="col-sm-6 col-md-4 mb-3">
+                <label for="{{ form.level.id_for_label }}" class="form-label">
+                    {{ form.level.label }}:
+                    {% if form.level.field.required %}<span class="text-danger">*</span>{% endif %}
+                </label>
+                {% render_field form.level class="form-select" %}
+                {% for error in form.level.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+                <div class="invalid-feedback">
+                    Este campo é obrigatório
+                </div>
+            </div>
+
+            <!-- Observações -->
+            <div class="col-12 mb-3">
+                <label for="{{ form.notes.id_for_label }}" class="form-label">
+                    {{ form.notes.label }}:
+                </label>
+                {% render_field form.notes class="form-control" rows="3" %}
+                {% for error in form.notes.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="col-12 mb-3">
+                <div class="g-1">
+
+                    {% if not is_detail %}
+                        <!-- Botões quando NÃO é detalhamento -->
+                        <button type="submit" class="btn btn-success me-1">
+                            <i class="bi bi-check-lg me-1"></i> Salvar
+                        </button>
+
+                        <button type="reset" class="btn btn-warning me-1">
+                            <i class="bi bi-x me-1"></i> Limpar
+                        </button>
+                    {% else %}
+                        <!-- Botão Editar no modo detalhado -->
+                        <a href="{% url 'profiles:sistemas_update' system.pk %}" 
+                           title="Editar Registro" class="btn btn-primary me-1">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                    {% endif %}
+
+                    <!-- Botão Voltar -->
+                    <button type="button" onclick="window.history.go(-1)" class="btn btn-secondary">
+                        <i class="bi bi-arrow-return-left me-1"></i> Voltar
+                    </button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}

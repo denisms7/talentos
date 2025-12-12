@@ -1,5 +1,5 @@
 from django import forms
-from .models import ProfileSkill, Certification, Profile
+from .models import ProfileSkill, Certification, Profile, ProfileSystem, System
 
 
 class ProfileForm(forms.ModelForm):
@@ -103,3 +103,52 @@ class ProfileSkillDetailForm(forms.ModelForm):
         # Desabilita todos os campos
         for field in self.fields.values():
             field.disabled = True
+
+
+
+class ProfileSystemForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.profile = kwargs.pop("profile", None)
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        model = ProfileSystem
+        fields = ["system", "level", "notes"]
+        widgets = {
+            "system": forms.Select(attrs={"class": "form-select"}),
+            "level": forms.Select(attrs={"class": "form-select"}),
+            "notes": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        system = cleaned_data.get("system")
+
+        if not self.profile:
+            raise forms.ValidationError("Perfil não definido no formulário.")
+
+        if ProfileSystem.objects.filter(
+            profile=self.profile,
+            system=system
+        ).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError(
+                "Este sistema já está cadastrado para este perfil."
+            )
+
+        return cleaned_data
+
+
+
+
+
+class ProfileSystemDetailForm(forms.ModelForm):
+    class Meta:
+        model = ProfileSystem
+        fields = ["system", "level", "notes"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            field.widget.attrs["readonly"] = True   # impede edição visual
+            field.widget.attrs["disabled"] = True   # impede submissão

@@ -124,9 +124,10 @@ class ProfileSystem(models.Model):
         related_name="profiles",
         verbose_name="Sistema",
     )
-    level = models.CharField(
-        max_length=20,
+    level = models.IntegerField(
         choices=SkillLevel.choices,
+        verbose_name="Nível",
+        default=SkillLevel.BASIC
     )
     notes = models.TextField(
         "Observações",
@@ -141,3 +142,5 @@ class ProfileSystem(models.Model):
 
     def __str__(self):
         return f"{self.profile} → {self.system}"
+
+

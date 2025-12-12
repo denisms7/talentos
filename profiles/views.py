@@ -5,10 +5,11 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect, get_object_or_404
 from django.db.models.deletion import ProtectedError, RestrictedError
 from django.views.generic import (DetailView, CreateView, UpdateView, ListView, DeleteView,)
-from .models import Certification, CertificationType, ProfileSkill, SkillLevel, Profile
+from .models import Certification, CertificationType, ProfileSkill, SkillLevel, Profile, ProfileSystem
 from skills.models import SkillType
 from .forms import CertificationForm, CertificationDetail_ModelForm
 from .forms import ProfileSkillForm, ProfileSkillDetailForm, ProfileForm
+from .forms import ProfileSystemForm , ProfileSystemDetailForm
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -296,5 +297,132 @@ class ProfileSkillDeleteView(LoginRequiredMixin, PermissionRequiredMixin, Delete
                 request,
                 "Ocorreu um erro inesperado ao tentar excluir a habilidade."
             )
+
+        return redirect(self.success_url)
+
+
+# ===================================== SYSTEMS =====================================
+class ProfileSystemListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    template_name = "systems/system_list.html"
+    context_object_name = "systems"
+    paginate_by = 10
+    permission_required = "register.view_profilesystem"
+
+    def get_queryset(self):
+        profile = self.request.user.profile
+        queryset = profile.systems.all()
+
+        # Filtros
+        q = self.request.GET.get("q")
+        if q:
+            queryset = queryset.filter(system__name__icontains=q)
+
+        level = self.request.GET.get("level")
+        if level:
+            queryset = queryset.filter(level=level)
+
+        return queryset.order_by("system__name")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["levels"] = SkillLevel.choices  # mesmo enum usado em ProfileSkill
+
+        params = self.request.GET.copy()
+        params.pop("page", None)
+        context["querystring"] = params.urlencode()
+        return context
+
+
+class ProfileSystemCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = ProfileSystem
+    form_class = ProfileSystemForm
+    template_name = "systems/system_create.html"
+    success_url = reverse_lazy("profiles:sistemas_list")
+    permission_required = "register.add_profilesystem"
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["profile"] = self.request.user.profile
+        return kwargs
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.profile = self.request.user.profile
+        instance.save()
+
+        messages.success(self.request, "Sistema adicionado com sucesso!")
+        return redirect(self.success_url)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Erro ao salvar o sistema. Verifique os campos e tente novamente.")
+        return super().form_invalid(form)
+
+
+class ProfileSystemDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+    model = ProfileSystem
+    template_name = "systems/system_create.html"
+    context_object_name = "system"
+    permission_required = "register.view_profilesystem"
+
+    def get_queryset(self):
+        return ProfileSystem.objects.filter(profile=self.request.user.profile)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = ProfileSystemDetailForm(instance=self.object)
+        context["is_detail"] = True
+        return context
+
+
+class ProfileSystemUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = ProfileSystem
+    form_class = ProfileSystemForm
+    template_name = "systems/system_create.html"
+    context_object_name = "system"
+    success_url = reverse_lazy("profiles:sistemas_list")
+    permission_required = "register.change_profilesystem"
+
+    def get_queryset(self):
+        return ProfileSystem.objects.filter(profile=self.request.user.profile)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["profile"] = self.request.user.profile
+        return kwargs
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.profile = self.request.user.profile  # segurança extra
+        instance.save()
+
+        messages.success(self.request, "Sistema atualizado com sucesso!")
+        return redirect(self.success_url)
+
+
+class ProfileSystemDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = ProfileSystem
+    template_name = "systems/profile_system_delete.html"
+    context_object_name = "system"
+    success_url = reverse_lazy("profiles:sistemas_list")
+    permission_required = "register.delete_profilesystem"
+
+    def get_queryset(self):
+        return ProfileSystem.objects.filter(profile=self.request.user.profile)
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        try:
+            self.object.delete()
+            messages.success(request, "Sistema removido com sucesso.")
+
+        except ProtectedError:
+            messages.warning(request, "Este sistema não pode ser removido pois possui vínculos protegidos.")
+
+        except RestrictedError:
+            messages.warning(request, "Este sistema possui vínculos restritos e não pode ser removido.")
+
+        except Exception:
+            messages.error(request, "Ocorreu um erro inesperado ao tentar excluir o sistema.")
 
         return redirect(self.success_url)
