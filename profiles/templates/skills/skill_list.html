@@ -90,8 +90,8 @@
                             <td>{{ skill.skill.get_skill_type_display }}</td>
                             <td>{{ skill.get_level_display }}</td>
                             <td>
-                                {% if item.notes %}
-                                    {{ item.notes|truncatewords:12 }}
+                                {% if skill.notes %}
+                                    {{ skill.notes|truncatewords:12 }}
                                 {% else %}
                                     <span class="text-secondary">—</span>
                                 {% endif %}
