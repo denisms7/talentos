@@ -6,7 +6,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = [
-            "position",
+            "function",
             "registration",
             "admission_date",
             "public",

@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import (
     Skill,
     System,
+    Function,
 )
 
 
@@ -24,3 +25,10 @@ class SystemAdmin(admin.ModelAdmin):
     search_fields = ("name", "description", "owner_sector")
     ordering = ("name",)
     readonly_fields = ("created_at",)
+
+
+@admin.register(Function)
+class FunctionAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
+

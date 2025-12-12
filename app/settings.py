@@ -51,8 +51,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'widget_tweaks',
 
+    # Libs Terceiros
+    'widget_tweaks',
+    "ckeditor",
+
+    # APPs Proprios
     'user',
     'skills',
     'profiles',
