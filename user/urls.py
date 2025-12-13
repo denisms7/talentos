@@ -1,15 +1,15 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import UsuarioEdit, UsuarioDetailView, alterar_usuario, AcessoNegadoView, CustomPasswordResetCompleteView
+from .views import UsuarioEdit, AcessoNegadoView, CustomPasswordResetCompleteView
 
 
 urlpatterns = [
-    path('perfil/', UsuarioDetailView.as_view(), name='perfil'),
+    # path('perfil/', UsuarioDetailView.as_view(), name='perfil'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
 
     path('senha/', UsuarioEdit.as_view(), name='alterar_senha'),
-    path('usuario/', alterar_usuario, name='alterar_usuario'),
+    # path('usuario/', alterar_usuario, name='alterar_usuario'),
 
     path('acesso-negado/', AcessoNegadoView.as_view(), name='acesso-negado'),
 

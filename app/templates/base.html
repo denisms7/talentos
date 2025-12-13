@@ -36,6 +36,15 @@
     {% block script %}
     {% endblock script %}
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const popovers = document.querySelectorAll('[data-bs-toggle="popover"]');
+            popovers.forEach(el => {
+                new bootstrap.Popover(el);
+            });
+        });
+    </script>
+
 </body>
 
 </html>
