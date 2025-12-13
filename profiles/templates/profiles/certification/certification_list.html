@@ -40,7 +40,7 @@
 
                     {# BOTÃO LIMPAR #}
                     {% if request.GET.q or request.GET.type %}
-                        <a href="{% url 'profiles:certificados' %}" class="btn btn-warning" title="Limpar filtros">
+                        <a href="{% url 'profiles:certificados_list' %}" class="btn btn-warning" title="Limpar filtros">
                             <i class="bi bi-x-lg"></i>
                         </a>
                     {% endif %}
