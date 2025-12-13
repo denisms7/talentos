@@ -107,9 +107,11 @@
                     {% else %}
                         {% if request.resolver_match.url_name == 'login' %} 
                             <div class="g-1">
-                                <a class="btn btn-outline-dark" aria-current="page" href="{% url 'skills:all_cargos' %}">
-                                    CARGOS
+
+                                <a class="btn btn-outline-dark" aria-current="page" href="{% url 'creation:solicitar_acesso' %}">
+                                    CADASTRAR
                                 </a>
+            
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                     ENTRAR
                                 </button>

@@ -13,6 +13,7 @@ urlpatterns = [
 
     # auth / accounts
     path("accounts/", include("user.urls")),
+    path("accounts/", include("creation.urls")),
 
     path("skills/", include("skills.urls")),
 
