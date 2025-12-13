@@ -12,6 +12,19 @@ from .forms import ProfileSkillForm, ProfileSkillDetailForm, ProfileForm, UserFo
 from .forms import ProfileSystemForm, ProfileSystemDetailForm
 
 
+class ProfilePublicDetailView(DetailView):
+    model = Profile
+    template_name = "profiles/profiles/profile.html"
+
+    def get_object(self, queryset=None):
+        profile = get_object_or_404(Profile, pk=self.kwargs["pk"])
+
+        if not profile.public:
+            messages.error(self.request, "Este perfil não é público.")
+            return redirect(reverse_lazy("home"))
+        return profile
+
+
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = ProfileForm
@@ -70,23 +83,9 @@ class PublicProfileListView(LoginRequiredMixin, ListView):
         return queryset.order_by("user__first_name", "user__last_name")
 
 
-class ProfilePublicDetailView(DetailView):
-    model = Profile
-    template_name = "profiles/profiles/profile.html"
-
-    def get_object(self, queryset=None):
-        profile = get_object_or_404(Profile, pk=self.kwargs["pk"])
-
-        if not profile.public:
-            messages.error(self.request, "Este perfil não é público.")
-            return redirect(reverse_lazy("home"))
-        return profile
-
-
-class CertificationListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class CertificationListView(LoginRequiredMixin, ListView):
     template_name = "profiles/certification/certification_list.html"
     context_object_name = "certifications"
-    permission_required = 'register.view_certification'
     paginate_by = 10
 
     def get_queryset(self):
@@ -120,12 +119,11 @@ class CertificationListView(LoginRequiredMixin, PermissionRequiredMixin, ListVie
         return context
 
 
-class CertificationCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class CertificationCreateView(LoginRequiredMixin, CreateView):
     model = Certification
     form_class = CertificationForm
     template_name = "profiles/certification/certification_create.html"
     success_url = reverse_lazy("profiles:certificados_list")
-    permission_required = 'register.add_certification'
 
     def form_valid(self, form):
         form.instance.profile = self.request.user.profile
@@ -137,11 +135,10 @@ class CertificationCreateView(LoginRequiredMixin, PermissionRequiredMixin, Creat
         return super().form_invalid(form)
 
 
-class CertificationDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class CertificationDetailView(LoginRequiredMixin, DetailView):
     model = Certification
     template_name = "profiles/certification/certification_create.html"
     context_object_name = "certification"
-    permission_required = 'register.view_certification'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -150,13 +147,12 @@ class CertificationDetailView(LoginRequiredMixin, PermissionRequiredMixin, Detai
         return context
 
 
-class CertificationUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class CertificationUpdateView(LoginRequiredMixin, UpdateView):
     model = Certification
     form_class = CertificationForm
     template_name = "profiles/certification/certification_create.html"  # ou certification_update.html
     context_object_name = "certification"
     success_url = reverse_lazy("profiles:certificados_list")
-    permission_required = 'register.change_certification'
 
     def get_queryset(self):
         # Garante que o usuário só pode editar certificados do próprio perfil
@@ -167,12 +163,11 @@ class CertificationUpdateView(LoginRequiredMixin, PermissionRequiredMixin, Updat
         return super().form_valid(form)
 
 
-class CertificationDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class CertificationDeleteView(LoginRequiredMixin, DeleteView):
     model = Certification
     template_name = "profiles/certification/certification_delete.html"
     context_object_name = "certification"
     success_url = reverse_lazy("profiles:certificados_list")
-    permission_required = 'register.delete_certification'
 
     def get_queryset(self):
         # Garante que o usuário só apague seus próprios certificados
@@ -208,11 +203,10 @@ class CertificationDeleteView(LoginRequiredMixin, PermissionRequiredMixin, Delet
 
 
 # ===================================== SKILLS =====================================
-class ProfileSkillListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class ProfileSkillListView(LoginRequiredMixin, ListView):
     template_name = "profiles/skills/skill_list.html"
     context_object_name = "skills"
     paginate_by = 10
-    permission_required = "register.view_profileskill"
 
     def get_queryset(self):
         profile = self.request.user.profile
@@ -248,12 +242,11 @@ class ProfileSkillListView(LoginRequiredMixin, PermissionRequiredMixin, ListView
         return context
 
 
-class ProfileSkillCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class ProfileSkillCreateView(LoginRequiredMixin, CreateView):
     model = ProfileSkill
     form_class = ProfileSkillForm
     template_name = "profiles/skills/skill_create.html"
     success_url = reverse_lazy("profiles:habilidades_list")
-    permission_required = "register.add_profileskill"
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -275,11 +268,10 @@ class ProfileSkillCreateView(LoginRequiredMixin, PermissionRequiredMixin, Create
         return super().form_invalid(form)
 
 
-class ProfileSkillDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class ProfileSkillDetailView(LoginRequiredMixin, DetailView):
     model = ProfileSkill
     template_name = "profiles/skills/skill_create.html"
     context_object_name = "skill"
-    permission_required = "register.view_profileskill"
 
     def get_queryset(self):
         """Permite acessar apenas as skills do próprio usuário."""
@@ -293,13 +285,12 @@ class ProfileSkillDetailView(LoginRequiredMixin, PermissionRequiredMixin, Detail
         return context
 
 
-class ProfileSkillUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ProfileSkillUpdateView(LoginRequiredMixin, UpdateView):
     model = ProfileSkill
     form_class = ProfileSkillForm
     template_name = "profiles/skills/skill_create.html"
     context_object_name = "skill"
     success_url = reverse_lazy("profiles:habilidades_list")
-    permission_required = "register.change_profileskill"
 
     def get_queryset(self):
         """Permite editar apenas skills pertencentes ao usuário logado."""
@@ -318,12 +309,11 @@ class ProfileSkillUpdateView(LoginRequiredMixin, PermissionRequiredMixin, Update
         return redirect(self.success_url)
 
 
-class ProfileSkillDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class ProfileSkillDeleteView(LoginRequiredMixin, DeleteView):
     model = ProfileSkill
     template_name = "profiles/skills/profile_skill_delete.html"
     context_object_name = "skill"
     success_url = reverse_lazy("profiles:habilidades_list")
-    permission_required = "register.delete_profileskill"
 
     def get_queryset(self):
         """Permite deletar apenas skills pertencentes ao usuário logado."""
@@ -358,11 +348,10 @@ class ProfileSkillDeleteView(LoginRequiredMixin, PermissionRequiredMixin, Delete
 
 
 # ===================================== SYSTEMS =====================================
-class ProfileSystemListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class ProfileSystemListView(LoginRequiredMixin, ListView):
     template_name = "profiles/systems/system_list.html"
     context_object_name = "systems"
     paginate_by = 10
-    permission_required = "register.view_profilesystem"
 
     def get_queryset(self):
         profile = self.request.user.profile
@@ -389,12 +378,11 @@ class ProfileSystemListView(LoginRequiredMixin, PermissionRequiredMixin, ListVie
         return context
 
 
-class ProfileSystemCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class ProfileSystemCreateView(LoginRequiredMixin, CreateView):
     model = ProfileSystem
     form_class = ProfileSystemForm
     template_name = "profiles/systems/system_create.html"
     success_url = reverse_lazy("profiles:sistemas_list")
-    permission_required = "register.add_profilesystem"
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -414,11 +402,10 @@ class ProfileSystemCreateView(LoginRequiredMixin, PermissionRequiredMixin, Creat
         return super().form_invalid(form)
 
 
-class ProfileSystemDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class ProfileSystemDetailView(LoginRequiredMixin, DetailView):
     model = ProfileSystem
     template_name = "profiles/systems/system_create.html"
     context_object_name = "system"
-    permission_required = "register.view_profilesystem"
 
     def get_queryset(self):
         return ProfileSystem.objects.filter(profile=self.request.user.profile)
@@ -430,13 +417,12 @@ class ProfileSystemDetailView(LoginRequiredMixin, PermissionRequiredMixin, Detai
         return context
 
 
-class ProfileSystemUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ProfileSystemUpdateView(LoginRequiredMixin, UpdateView):
     model = ProfileSystem
     form_class = ProfileSystemForm
     template_name = "profiles/systems/system_create.html"
     context_object_name = "system"
     success_url = reverse_lazy("profiles:sistemas_list")
-    permission_required = "register.change_profilesystem"
 
     def get_queryset(self):
         return ProfileSystem.objects.filter(profile=self.request.user.profile)
@@ -455,12 +441,11 @@ class ProfileSystemUpdateView(LoginRequiredMixin, PermissionRequiredMixin, Updat
         return redirect(self.success_url)
 
 
-class ProfileSystemDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class ProfileSystemDeleteView(LoginRequiredMixin, DeleteView):
     model = ProfileSystem
     template_name = "profiles/systems/profile_system_delete.html"
     context_object_name = "system"
     success_url = reverse_lazy("profiles:sistemas_list")
-    permission_required = "register.delete_profilesystem"
 
     def get_queryset(self):
         return ProfileSystem.objects.filter(profile=self.request.user.profile)
