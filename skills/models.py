@@ -55,7 +55,7 @@ class Function(models.Model):
 
     created_at = models.DateTimeField("Criação", auto_now_add=True)
     active = models.BooleanField("Ativo", default=True,)
-    name = models.CharField(max_length=100, verbose_name='Nome do Cargo')
+    name = models.CharField(max_length=100, verbose_name='Nome do Cargo', unique=True)
     description = RichTextField(max_length=10000, verbose_name='Atribuições Basicas')
     workload = models.PositiveSmallIntegerField("Carga Horária (horas/semana)", help_text="Informe a carga horária semanal",)
     education_level = models.CharField("Nível de Escolaridade", max_length=20, choices=EducationLevel.choices,)

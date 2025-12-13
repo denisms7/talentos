@@ -23,27 +23,50 @@
         </div>
     </section>
 
-    <section class="mt-5">
-        <h2 class="mb-3">🗂️ Responsabilidades</h2>
+<section class="mt-5">
+    <h2 class="mb-3">🗂️ Responsabilidades</h2>
 
-        {% if object.function %}
-            <p class="lead">
-                <strong>{{ object.function }}</strong><br>
-                Nível de escolaridade:
-                {{ object.function.get_education_level_display }}<br>
-                Carga horária:
-                {{ object.function.workload }} horas semanais.
-            </p>
+    {% if object.function %}
+        <p class="lead mb-2">
+            <strong>{{ object.function }}</strong>
+        </p>
 
-            <p>
-                {{ object.function.description|safe }}
-            </p>
-        {% else %}
-            <p class="lead text-muted">
-                Nenhum cargo selecionado no perfil.
-            </p>
-        {% endif %}
-    </section>
+        <div class="mb-3">
+            {% with level=object.function.education_level %}
+                {% if level == "FUNDAMENTAL" %}
+                    <span class="badge bg-secondary">
+                        Ensino Fundamental
+                    </span>
+                {% elif level == "MEDIO" %}
+                    <span class="badge bg-info text-dark">
+                        Ensino Médio
+                    </span>
+                {% elif level == "TECNICO" %}
+                    <span class="badge bg-warning text-dark">
+                        Ensino Técnico
+                    </span>
+                {% elif level == "SUPERIOR" %}
+                    <span class="badge bg-success">
+                        Ensino Superior
+                    </span>
+                {% endif %}
+            {% endwith %}
+
+            <span class="ms-2 text-muted">
+                <i class="bi bi-clock"></i>
+                {{ object.function.workload }} horas semanais
+            </span>
+        </div>
+
+        <p>
+            {{ object.function.description|safe }}
+        </p>
+    {% else %}
+        <p class="lead text-muted">
+            Nenhum cargo selecionado no perfil.
+        </p>
+    {% endif %}
+</section>
 
 
     <section class="mt-5">

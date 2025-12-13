@@ -137,6 +137,25 @@ class Command(BaseCommand):
                 """,
             },
 
+            {
+                "name": "Motorista",
+                "workload": 40,
+                "education_level": (
+                    Function.EducationLevel.FUNDAMENTAL
+                ),
+                "description": """
+                <p>
+                    - Dirigir veículos de pequeno, médio e grande porte;
+                    - Dirigir ônibus de transporte de alunos, desde que possua a habilitação e os cursos exigidos pelo Código Nacional de Trânsito;
+                    - Dirigir ambulância;
+                    - Controla o consumo de combustíveis, quilometragem, lubrificação, objetivando a manutenção do veículo;
+                    - Executa toda e qualquer outra tarefa não especificada, porém assemelhada a essas funções descritas;
+                    - Efetua carga e descarga dos veículos que dirige, bem como realiza entrega de mercadorias, pacotes e outros produtos.
+                </p>
+                """,
+            },
+
+
 
         ]
 
