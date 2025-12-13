@@ -24,10 +24,9 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = [
-            "function",
+            "cpf",
             "registration",
             "admission_date",
-            "cpf",
             "public",
         ]
         widgets = {
@@ -35,10 +34,17 @@ class ProfileForm(forms.ModelForm):
                 format="%Y-%m-%d",
                 attrs={"type": "date"}
             ),
+
+            "cpf": forms.TextInput(
+                attrs={
+                    "readonly": True,
+                },
+            ),
         }
 
 
 class CertificationForm(forms.ModelForm):
+    
     class Meta:
         model = Certification
         fields = [
