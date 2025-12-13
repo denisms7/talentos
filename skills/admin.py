@@ -25,6 +25,38 @@ class SystemAdmin(admin.ModelAdmin):
 
 @admin.register(Function)
 class FunctionAdmin(admin.ModelAdmin):
-    list_display = ("name",)
-    search_fields = ("name",)
+    list_display = ("name", "education_level", "workload", "created_at",)
+    list_filter = ("education_level", "active",)
+    search_fields = ("name", "description",)
+    ordering = ("name",)
     readonly_fields = ("created_at",)
+
+    fieldsets = (
+        (
+            "Informações do Cargo",
+            {
+                "fields": (
+                    "name",
+                    "education_level",
+                    "workload",
+                    "active",
+                ),
+            },
+        ),
+        (
+            "Descrição",
+            {
+                "fields": (
+                    "description",
+                ),
+            },
+        ),
+        (
+            "Auditoria",
+            {
+                "fields": (
+                    "created_at",
+                ),
+            },
+        ),
+    )

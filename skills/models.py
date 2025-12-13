@@ -46,14 +46,24 @@ class System(models.Model):
 
 
 class Function(models.Model):
+
+    class EducationLevel(models.TextChoices):
+        FUNDAMENTAL = "FUNDAMENTAL", "Fundamental"
+        MEDIO = "MEDIO", "Médio"
+        TECNICO = "TECNICO", "Técnico"
+        SUPERIOR = "SUPERIOR", "Superior"
+
     created_at = models.DateTimeField("Criação", auto_now_add=True)
     active = models.BooleanField("Ativo", default=True,)
     name = models.CharField(max_length=100, verbose_name='Nome do Cargo')
     description = RichTextField(max_length=10000, verbose_name='Atribuições Basicas')
+    workload = models.PositiveSmallIntegerField("Carga Horária (horas/semana)", help_text="Informe a carga horária semanal",)
+    education_level = models.CharField("Nível de Escolaridade", max_length=20, choices=EducationLevel.choices,)
 
     class Meta:
         verbose_name = "Cargo"
         verbose_name_plural = "Cargos"
+        ordering = ["name"]
 
     def __str__(self):
-        return f"{self.name}"
+        return self.name

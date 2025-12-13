@@ -9,6 +9,10 @@ class Command(BaseCommand):
         functions = [
             {
                 "name": "Agente Administrativo",
+                "workload": 40,
+                "education_level": (
+                    Function.EducationLevel.MEDIO
+                ),
                 "description": """
                 <p>- Executa serviços de apoio nas áreas técnicas da Administração Pública;<br />
                 - Executa serviços técnicos relativos a sua área de atuação;<br />
@@ -32,6 +36,10 @@ class Command(BaseCommand):
             {
                 "name": (
                     "Agente de Serviços Administrativos - Recepcionista"
+                ),
+                "workload": 40,
+                "education_level": (
+                    Function.EducationLevel.MEDIO
                 ),
                 "description": """
                 <p>
@@ -57,7 +65,13 @@ class Command(BaseCommand):
             },
 
             {
-                "name": "Agente de Serviços Administrativos - Telefonista",
+                "name": (
+                    "Agente de Serviços Administrativos - Telefonista"
+                ),
+                "workload": 40,
+                "education_level": (
+                    Function.EducationLevel.MEDIO
+                ),
                 "description": """
                 <p>
                 - Faz ligações telefônicas;<br />
@@ -73,6 +87,10 @@ class Command(BaseCommand):
 
             {
                 "name": "Agente de Fiscalização",
+                "workload": 40,
+                "education_level": (
+                    Function.EducationLevel.MEDIO
+                ),
                 "description": """
                 <p>
                 - Fiscaliza pedidos de inscrição no cadastro de contribuintes municipais e licenças de localização e funcionamento;<br />
@@ -102,6 +120,10 @@ class Command(BaseCommand):
 
             {
                 "name": "Advogado",
+                "workload": 20,
+                "education_level": (
+                    Function.EducationLevel.SUPERIOR
+                ),
                 "description": """
                 <p>
                 - Presta suporte técnico aos órgãos quanto às demandas da comunidade e dos conselhos;<br />
@@ -120,11 +142,14 @@ class Command(BaseCommand):
 
         created_count = 0
 
+
         for data in functions:
             function, created = Function.objects.get_or_create(
                 name=data["name"],
                 defaults={
                     "description": data["description"],
+                    "workload": data["workload"],
+                    "education_level": data["education_level"],
                     "active": True,
                 },
             )
@@ -145,6 +170,7 @@ class Command(BaseCommand):
 
         self.stdout.write(
             self.style.SUCCESS(
-                f"Processo finalizado. {created_count} cargo(s) criado(s)."
+                f"Processo finalizado. "
+                f"{created_count} cargo(s) criado(s)."
             )
         )
