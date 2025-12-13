@@ -8,7 +8,7 @@ from django.views.generic import (DetailView, CreateView, UpdateView, ListView, 
 from .models import Certification, CertificationType, ProfileSkill, SkillLevel, Profile, ProfileSystem
 from skills.models import SkillType
 from .forms import CertificationForm, CertificationDetail_ModelForm
-from .forms import ProfileSkillForm, ProfileSkillDetailForm, ProfileForm
+from .forms import ProfileSkillForm, ProfileSkillDetailForm, ProfileForm, UserForm
 from .forms import ProfileSystemForm, ProfileSystemDetailForm
 
 
@@ -16,15 +16,36 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = ProfileForm
     template_name = "profiles/profiles/profile_form.html"
-    success_url = reverse_lazy("profiles:perfil_edit")
+    success_url = reverse_lazy("home")
 
     def get_object(self, queryset=None):
-        """Retorna apenas o profile do usuário logado."""
-        return get_object_or_404(Profile, user=self.request.user)
+        return self.request.user.profile
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.method == "POST":
+            context["user_form"] = UserForm(
+                self.request.POST,
+                instance=self.request.user,
+            )
+        else:
+            context["user_form"] = UserForm(
+                instance=self.request.user,
+            )
+
+        return context
 
     def form_valid(self, form):
-        messages.success(self.request, "Perfil atualizado com sucesso!")
-        return super().form_valid(form)
+        context = self.get_context_data()
+        user_form = context["user_form"]
+
+        if not user_form.is_valid():
+            return self.form_invalid(form)
+
+        user_form.save()
+        self.object = form.save()
+        return redirect(self.get_success_url())
 
 
 class PublicProfileListView(LoginRequiredMixin, ListView):
