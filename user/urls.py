@@ -52,10 +52,10 @@ urlpatterns = [
     ),
 
     path(
-        'acesso-negado/',
+        'access-denied/',
         AcessoNegadoView.as_view(),
         name='acesso-negado'
     ),
 
-    path('senha/', UsuarioEdit.as_view(), name='alterar_senha'),
+    path('password/update/', UsuarioEdit.as_view(), name='alterar_senha'),
 ]

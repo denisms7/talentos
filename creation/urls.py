@@ -5,5 +5,5 @@ app_name = "creation"
 
 urlpatterns = [
     # Certificados
-    path("acesso/solicitar/", AccessRequestCreateView.as_view(), name="solicitar_acesso"),
+    path("solicitar-acesso/", AccessRequestCreateView.as_view(), name="solicitar_acesso"),
 ]
