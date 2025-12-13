@@ -30,4 +30,17 @@ class AccessRequestAdmin(admin.ModelAdmin):
             messages.SUCCESS,
         )
 
+    def save_model(self, request, obj, form, change):
+        was_pending = False
+
+        if change:
+            old_obj = AccessRequest.objects.get(pk=obj.pk)
+            was_pending = old_obj.status == 'pending'
+
+        super().save_model(request, obj, form, change)
+
+        if was_pending and obj.status == 'approved':
+            create_user_from_request(obj)
+
+
     approve_requests.short_description = 'Aprovar solicitações selecionadas'
