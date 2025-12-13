@@ -34,24 +34,27 @@ function TestaCPF(strCPF) {
 }
 
 function ValidaCPF() {
-    let formCpf = document.getElementById('id_cpf')
-    const cpflog = document.getElementById('cpflog')
-    let teste = TestaCPF(formCpf.value.replace(/[^\d]/g, ''))
+    const formCpf = document.getElementById('id_cpf');
+    const cpfLimpo = formCpf.value.replace(/[^\d]/g, '');
 
-    if (formCpf.value.length == 0) {
-        teste = true // deixa vazio passar sem erro
-        formCpf.classList.remove("is-valid", "is-invalid")
+    // Campo vazio → inválido porque é required
+    if (!cpfLimpo) {
+        formCpf.setCustomValidity('Campo obrigatório');
+        formCpf.classList.remove('is-valid');
+        formCpf.classList.add('is-invalid');
+        return;
     }
 
-    if (teste) {
-        cpflog.classList.add("d-none");
-        cpflog.classList.remove("d-block");
-        formCpf.classList.remove("is-invalid")
-        formCpf.classList.add("is-valid")
-    } else {
-        cpflog.classList.remove("d-none");
-        cpflog.classList.add("d-block");
-        formCpf.classList.remove("is-valid")
-        formCpf.classList.add("is-invalid")
+    // CPF inválido
+    if (!TestaCPF(cpfLimpo)) {
+        formCpf.setCustomValidity('CPF inválido');
+        formCpf.classList.remove('is-valid');
+        formCpf.classList.add('is-invalid');
+        return;
     }
+
+    // CPF válido
+    formCpf.setCustomValidity('');
+    formCpf.classList.remove('is-invalid');
+    formCpf.classList.add('is-valid');
 }
