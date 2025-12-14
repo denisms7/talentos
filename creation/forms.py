@@ -10,7 +10,6 @@ from .utils import clean_cpf, is_valid_cpf
 User = get_user_model()
 
 
-
 class AccessRequestForm(forms.ModelForm):
 
     class Meta:

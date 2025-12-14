@@ -18,14 +18,6 @@
         <div class="col-md-8">
             <label class="form-label">Pesquisar:</label>
             <div class="input-group">
-                <input
-                    type="text"
-                    name="q"
-                    class="form-control"
-                    autocomplete="off"
-                    placeholder="Buscar por nome..."
-                    value="{{ request.GET.q }}"
-                >
                 <select name="skill_type" class="form-select">
                     <option value="">Todos</option>
                     {% for key, label in skill_types %}
@@ -34,6 +26,14 @@
                         </option>
                     {% endfor %}
                 </select>
+                <input
+                    type="text"
+                    name="q"
+                    class="form-control"
+                    autocomplete="off"
+                    placeholder="Buscar por nome..."
+                    value="{{ request.GET.q }}"
+                >
                 <button class="btn btn-primary" type="submit">Buscar</button>
             </div>
         </div>

@@ -8,7 +8,7 @@ class SystemListView(LoginRequiredMixin, ListView):
     model = System
     template_name = "skills/system_list.html"
     context_object_name = "systems"
-    paginate_by = 20
+    paginate_by = 50
 
     def get_queryset(self):
         queryset = System.objects.filter(active=True)
@@ -23,7 +23,7 @@ class SkillListView(LoginRequiredMixin, ListView):
     model = Skill
     template_name = "skills/skill_list.html"
     context_object_name = "skills"
-    paginate_by = 20
+    paginate_by = 50
 
     def get_queryset(self):
         queryset = Skill.objects.filter(active=True)

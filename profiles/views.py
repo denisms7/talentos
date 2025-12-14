@@ -12,7 +12,7 @@ from .forms import ProfileSkillForm, ProfileSkillDetailForm, ProfileForm, UserFo
 from .forms import ProfileSystemForm, ProfileSystemDetailForm
 
 
-class ProfilePublicDetailView(DetailView):
+class ProfilePublicDetailView(LoginRequiredMixin, DetailView):
     model = Profile
     template_name = "profiles/profiles/profile.html"
 
@@ -81,6 +81,7 @@ class PublicProfileListView(LoginRequiredMixin, ListView):
             )
 
         return queryset.order_by("user__first_name", "user__last_name")
+
 
 # ===================================== CERTIFICADOS =====================================
 class CertificationListView(LoginRequiredMixin, ListView):
@@ -289,7 +290,6 @@ class ProfileSkillDetailView(LoginRequiredMixin, DetailView):
         context["skill_levels"] = SkillLevel
         context["is_detail"] = True
         return context
-    
 
 
 class ProfileSkillUpdateView(LoginRequiredMixin, UpdateView):
@@ -457,7 +457,7 @@ class ProfileSystemUpdateView(LoginRequiredMixin, UpdateView):
 
         messages.success(self.request, "Sistema atualizado com sucesso!")
         return redirect(self.success_url)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["skill_levels"] = SkillLevel

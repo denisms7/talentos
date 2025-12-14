@@ -23,7 +23,7 @@
                             role="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false">
-                                Editar
+                                🖊️Editar
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -31,16 +31,6 @@
                                         👤 Perfil
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="dropdown-item" href="{% url 'alterar_senha' %}">
-                                        🔒 Alterar Senha
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-
                                 <li>
                                     <a class="dropdown-item" href="{% url 'profiles:habilidades_list' %}">
                                         🧠 Habilidades
@@ -56,28 +46,56 @@
                                         📜 Certificados
                                     </a>
                                 </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'alterar_senha' %}">
+                                        🔒 Alterar Senha
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
+                        <!-- Relatorio -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                            href="#"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                                📄Informações
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{% url "skills:all_cargos" %}">
+                                        🗂️Cargos
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'skills:all_habilidades' %}">
+                                        🧠 Habilidades
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'skills:all_sistemas' %}">
+                                        🖥️ Sistemas
+                                    </a>
+                                </li>
                             </ul>
                         </li>
 
                         <!-- Perfil Publico -->
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{% url 'skills:all_cargos' %}">
-                                Cargos
-                            </a>
-                        </li>
-
-                        <!-- Perfil Publico -->
-                        <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="{% url 'profiles:perfis_publicos' %}">
-                                Servidores
+                                🏢Servidores
                             </a>
                         </li>
 
                         <!-- SuperUser -->
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="{% url 'admin:index' %}">
-                                SuperUser
+                                ⚜️Admin
                             </a>
                         </li>
 

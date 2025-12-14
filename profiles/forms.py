@@ -27,6 +27,7 @@ class ProfileForm(forms.ModelForm):
             "cpf",
             "registration",
             "admission_date",
+            'phrase',
             "public",
         ]
         widgets = {
