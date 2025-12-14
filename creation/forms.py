@@ -1,12 +1,14 @@
 # accounts/forms.py
 from django import forms
 from django.contrib.auth import get_user_model
+
 from .models import AccessRequest
 from profiles.models import Profile
-from .utils import is_valid_cpf, clean_cpf
+from .utils import clean_cpf, is_valid_cpf
 
 
 User = get_user_model()
+
 
 
 class AccessRequestForm(forms.ModelForm):
@@ -36,6 +38,7 @@ class AccessRequestForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Já existe um usuário cadastrado com este CPF.'
             )
+
         return cpf
 
     def clean_email(self):
@@ -45,6 +48,7 @@ class AccessRequestForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Já existe um usuário cadastrado com este e-mail.'
             )
+
         return email
 
     def clean_username(self):
@@ -54,4 +58,5 @@ class AccessRequestForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Este usuário já existe.'
             )
+
         return username
