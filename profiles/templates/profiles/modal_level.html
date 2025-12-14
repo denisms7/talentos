@@ -1,69 +1,24 @@
 <!-- Modal -->
-<div class="modal fade" id="ModalHabilidadeNivel" tabindex="-1"
-     aria-labelledby="ModalHabilidadeNivelLabel"
-     aria-hidden="true">
+<div class="modal fade" id="ModalHabilidadeNivel" tabindex="-1" aria-labelledby="ModalHabilidadeNivelLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalHabilidadeNivelLabel">
-                    📊 Descrição dos Níveis de Habilidade
+                    <i class="bi bi-bar-chart"></i> Descrição dos Níveis de Habilidade
                 </h5>
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close">
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             <div class="modal-body">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        <strong><i class="bi bi-0-circle"></i> Robótico</strong><br>
-                        Executa tarefas estritamente repetitivas, seguindo
-                        instruções diretas e previamente definidas, sem
-                        autonomia para tomada de decisão. Atua sob supervisão
-                        constante, não realizando análises, adaptações ou
-                        melhorias nos processos.
-                    </li>
-
-                    <li class="list-group-item">
-                        <strong><i class="bi bi-1-circle"></i> Básico</strong><br>
-                        Possui conhecimentos iniciais da atividade ou
-                        ferramenta. Executa tarefas simples com orientação
-                        frequente, compreendendo procedimentos padrão, porém
-                        ainda com limitações para resolver problemas ou atuar
-                        de forma independente.
-                    </li>
-
-                    <li class="list-group-item">
-                        <strong><i class="bi bi-2-circle"></i> Intermediário</strong><br>
-                        Executa atividades com autonomia parcial,
-                        compreendendo fluxos e regras do processo. Consegue
-                        resolver problemas comuns, adaptar procedimentos
-                        conforme a necessidade e prestar apoio técnico em
-                        demandas rotineiras.
-                    </li>
-
-                    <li class="list-group-item">
-                        <strong><i class="bi bi-3-circle"></i> Avançado</strong><br>
-                        Domina a atividade ou ferramenta, atuando com alta
-                        autonomia e segurança técnica. Analisa cenários,
-                        propõe melhorias, corrige falhas e orienta outros
-                        servidores.
-                    </li>
-
-                    <li class="list-group-item">
-                        <strong><i class="bi bi-4-circle"></i> Especialista</strong><br>
-                        Possui domínio pleno e aprofundado da área de atuação.
-                        Atua como referência técnica, define padrões,
-                        metodologias e boas práticas, participa de decisões
-                        estratégicas e resolve problemas críticos ou inéditos.
-                    </li>
+                    {% for level in skill_levels %}
+                        <li class="list-group-item">
+                            <div class="fw-bold"><i class="bi bi-{{ level }}-circle"></i> {{ level.label }}</div>
+                            {{ level.description }}
+                        </li>
+                    {% endfor %}
                 </ul>
-
-                <p class="mt-3 text-center">
-                    Selecione o nível que melhor representa sua
-                    proficiência na atividade avaliada.
+                <p class="small text-muted text-center">
+                    Selecione o nível que melhor representa sua proficiência na atividade.
                 </p>
             </div>
         </div>

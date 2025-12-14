@@ -82,7 +82,7 @@ class PublicProfileListView(LoginRequiredMixin, ListView):
 
         return queryset.order_by("user__first_name", "user__last_name")
 
-
+# ===================================== CERTIFICADOS =====================================
 class CertificationListView(LoginRequiredMixin, ListView):
     template_name = "profiles/certification/certification_list.html"
     context_object_name = "certifications"
@@ -267,6 +267,11 @@ class ProfileSkillCreateView(LoginRequiredMixin, CreateView):
         )
         return super().form_invalid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["skill_levels"] = SkillLevel
+        return context
+
 
 class ProfileSkillDetailView(LoginRequiredMixin, DetailView):
     model = ProfileSkill
@@ -281,8 +286,10 @@ class ProfileSkillDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = ProfileSkillDetailForm(instance=self.object)
+        context["skill_levels"] = SkillLevel
         context["is_detail"] = True
         return context
+    
 
 
 class ProfileSkillUpdateView(LoginRequiredMixin, UpdateView):
@@ -307,6 +314,11 @@ class ProfileSkillUpdateView(LoginRequiredMixin, UpdateView):
         instance.save()
         messages.success(self.request, "Habilidade atualizada com sucesso!")
         return redirect(self.success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["skill_levels"] = SkillLevel
+        return context
 
 
 class ProfileSkillDeleteView(LoginRequiredMixin, DeleteView):
@@ -401,6 +413,11 @@ class ProfileSystemCreateView(LoginRequiredMixin, CreateView):
         messages.error(self.request, "Erro ao salvar o sistema. Verifique os campos e tente novamente.")
         return super().form_invalid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["skill_levels"] = SkillLevel
+        return context
+
 
 class ProfileSystemDetailView(LoginRequiredMixin, DetailView):
     model = ProfileSystem
@@ -413,6 +430,7 @@ class ProfileSystemDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = ProfileSystemDetailForm(instance=self.object)
+        context["skill_levels"] = SkillLevel
         context["is_detail"] = True
         return context
 
@@ -439,6 +457,11 @@ class ProfileSystemUpdateView(LoginRequiredMixin, UpdateView):
 
         messages.success(self.request, "Sistema atualizado com sucesso!")
         return redirect(self.success_url)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["skill_levels"] = SkillLevel
+        return context
 
 
 class ProfileSystemDeleteView(LoginRequiredMixin, DeleteView):

@@ -72,7 +72,7 @@ class Certification(models.Model):
 class ProfileSkill(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="skills",)
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name="profiles", verbose_name="Habilidade",)
-    level = models.IntegerField(choices=SkillLevel.choices, verbose_name="Nível", default=SkillLevel.BASIC)
+    level = models.IntegerField(choices=SkillLevel.choices, verbose_name="Nível", default=SkillLevel.ROBOTIC)
     notes = models.TextField("Observações", blank=True,)
 
     class Meta:
@@ -88,7 +88,7 @@ class ProfileSkill(models.Model):
 class ProfileSystem(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="systems", verbose_name="Perfil",)
     system = models.ForeignKey(System, on_delete=models.CASCADE, related_name="profiles", verbose_name="Sistema",)
-    level = models.IntegerField(choices=SkillLevel.choices, verbose_name="Nível", default=SkillLevel.BASIC)
+    level = models.IntegerField(choices=SkillLevel.choices, verbose_name="Nível", default=SkillLevel.ROBOTIC)
     notes = models.TextField("Observações", blank=True,)
 
     class Meta:

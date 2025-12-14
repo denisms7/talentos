@@ -9,6 +9,42 @@ class SkillLevel(models.IntegerChoices):
     ADVANCED = 3, "Avançado"
     EXPERT = 4, "Especialista"
 
+    @property
+    def description(self):
+        descriptions = {
+            self.ROBOTIC: (
+                "Executa tarefas estritamente repetitivas, seguindo "
+                "instruções diretas e previamente definidas, sem autonomia "
+                "para tomada de decisão. Atua sob supervisão constante, não "
+                "realizando análises, adaptações ou melhorias nos processos."
+            ),
+            self.BASIC: (
+                "Possui conhecimentos iniciais da atividade ou ferramenta. "
+                "Executa tarefas simples com orientação frequente, "
+                "compreendendo procedimentos padrão, porém ainda com "
+                "limitações para resolver problemas ou atuar de forma "
+                "independente."
+            ),
+            self.INTERMEDIATE: (
+                "Executa atividades com autonomia parcial, compreendendo "
+                "fluxos e regras do processo. Consegue resolver problemas "
+                "comuns, adaptar procedimentos conforme a necessidade e "
+                "prestar apoio técnico em demandas rotineiras."
+            ),
+            self.ADVANCED: (
+                "Domina a atividade ou ferramenta, atuando com alta autonomia "
+                "e segurança técnica. Analisa cenários, propõe melhorias, "
+                "corrige falhas e orienta outros servidores."
+            ),
+            self.EXPERT: (
+                "Possui domínio pleno e aprofundado da área de atuação. Atua "
+                "como referência técnica, define padrões, metodologias e "
+                "boas práticas, participa de decisões estratégicas e resolve "
+                "problemas críticos ou inéditos."
+            ),
+        }
+        return descriptions.get(self, "")
+
 
 class SkillType(models.TextChoices):
     HARD = "hard", "Hard Skill"
