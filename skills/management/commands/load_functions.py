@@ -31,6 +31,7 @@ class Command(BaseCommand):
                 - Participa de programas de treinamento quando convocado;<br />
                 - Executa demais tarefas pertinentes à área de atuação.</p>
                 """,
+                "link": "https://leismunicipais.com.br/a1/pr/c/centenario-do-sul/lei-ordinaria/2025/326/3259/lei-ordinaria-n-3259-2025?q=3259",
             },
 
             {
@@ -62,6 +63,7 @@ class Command(BaseCommand):
                 - Executa demais funções administrativas correlatas.
                 </p>
                 """,
+                "link": "https://leismunicipais.com.br/a1/pr/c/centenario-do-sul/lei-ordinaria/2025/326/3259/lei-ordinaria-n-3259-2025?q=3259",
             },
 
             {
@@ -83,6 +85,7 @@ class Command(BaseCommand):
                 - Efetua todas as demais funções inerentes ao cargo.
                 </p>
                 """,
+                "link": "https://leismunicipais.com.br/a1/pr/c/centenario-do-sul/lei-ordinaria/2025/326/3259/lei-ordinaria-n-3259-2025?q=3259",
             },
 
             {
@@ -116,6 +119,7 @@ class Command(BaseCommand):
                 - Executa outras atividades correlatas.
                 </p>
                 """,
+                "link": "https://leismunicipais.com.br/a1/pr/c/centenario-do-sul/lei-ordinaria/2025/326/3259/lei-ordinaria-n-3259-2025?q=3259",
             },
 
             {
@@ -135,6 +139,7 @@ class Command(BaseCommand):
                 - Atua judicial e extrajudicialmente em situações que não sejam atribuição da Procuradoria Jurídica Municipal.
                 </p>
                 """,
+                "link": "https://leismunicipais.com.br/a1/pr/c/centenario-do-sul/lei-ordinaria/2025/326/3259/lei-ordinaria-n-3259-2025?q=3259",
             },
 
             {
@@ -153,10 +158,8 @@ class Command(BaseCommand):
                     - Efetua carga e descarga dos veículos que dirige, bem como realiza entrega de mercadorias, pacotes e outros produtos.
                 </p>
                 """,
+                "link": "https://leismunicipais.com.br/a1/pr/c/centenario-do-sul/lei-ordinaria/2025/326/3259/lei-ordinaria-n-3259-2025?q=3259",
             },
-
-
-
         ]
 
         created_count = 0
@@ -168,6 +171,7 @@ class Command(BaseCommand):
                     "description": data["description"],
                     "workload": data["workload"],
                     "education_level": data["education_level"],
+                    "link": data["link"],
                     "active": True,
                 },
             )

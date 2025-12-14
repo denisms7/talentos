@@ -59,6 +59,7 @@ class Function(models.Model):
     description = RichTextField(max_length=10000, verbose_name='Atribuições Basicas')
     workload = models.PositiveSmallIntegerField("Carga Horária (horas/semana)", help_text="Informe a carga horária semanal",)
     education_level = models.CharField("Nível de Escolaridade", max_length=20, choices=EducationLevel.choices,)
+    link = models.URLField("Legislação", blank=True, null=True, help_text="Link para a lei ou documento oficial que regulamenta o cargo",)
 
     class Meta:
         verbose_name = "Cargo"

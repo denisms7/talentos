@@ -39,6 +39,7 @@ class FunctionAdmin(admin.ModelAdmin):
                     "name",
                     "education_level",
                     "workload",
+                    "link",
                     "active",
                 ),
             },

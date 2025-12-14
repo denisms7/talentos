@@ -53,14 +53,23 @@
                 {% endwith %}
 
                 <span class="ms-2 text-muted">
-                    <i class="bi bi-clock"></i>
+                    ⏱️
                     {{ object.function.workload }} horas semanais
                 </span>
+
+                {% if object.function.link %}
+                    <span class="ms-2 text-muted">
+                        ⚖️ <a class="" href="{{ object.function.link }}" role="button" target="_blank">Legislação</a>
+                    </span>
+                {% endif %}
             </div>
 
             <p>
                 {{ object.function.description|safe }}
             </p>
+
+
+
         {% else %}
             <p class="lead text-muted">
                 Nenhum cargo selecionado no perfil.

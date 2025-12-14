@@ -85,6 +85,11 @@
                         <p>
                             <strong>Responsabilidades:</strong><br>
                             {{ func.description|safe }}
+
+                            {% if func.link %}
+                                ⚖️ <a class="" href="{{ func.link }}" role="button" target="_blank">Legislação</a>
+                            {% endif %}
+
                         </p>
                     </div>
                 </div>
