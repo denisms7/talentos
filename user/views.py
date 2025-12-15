@@ -16,7 +16,7 @@ class UsuarioEdit(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UsuarioSenhaForm
     template_name = 'accounts/alterar_senha.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('home')
 
     def get_object(self, queryset=None):
         return self.request.user
