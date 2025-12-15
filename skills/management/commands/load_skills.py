@@ -75,6 +75,15 @@ class Command(BaseCommand):
 
         created_count = 0
 
+        if Skill.objects.exists():
+            self.stdout.write(
+                self.style.WARNING(
+                    "A tabela Function já contém dados. "
+                    "Nenhum cargo foi criado."
+                )
+            )
+            return
+
         for name, skill_type in skills:
             obj, created = Skill.objects.get_or_create(
                 name=name,

@@ -164,6 +164,15 @@ class Command(BaseCommand):
 
         created_count = 0
 
+        if Function.objects.exists():
+            self.stdout.write(
+                self.style.WARNING(
+                    "A tabela Function já contém dados. "
+                    "Nenhum cargo foi criado."
+                )
+            )
+            return
+
         for data in functions:
             function, created = Function.objects.get_or_create(
                 name=data["name"],

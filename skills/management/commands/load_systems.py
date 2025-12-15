@@ -25,6 +25,15 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         created_count = 0
 
+        if System.objects.exists():
+            self.stdout.write(
+                self.style.WARNING(
+                    "A tabela Function já contém dados. "
+                    "Nenhum cargo foi criado."
+                )
+            )
+            return
+
         for item in self.SYSTEMS:
             name = item["name"]
             description = item["description"]
