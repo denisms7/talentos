@@ -1,6 +1,8 @@
 
 media/
-
+staticfiles/
+letsencrypt/
+data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
