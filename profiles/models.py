@@ -24,7 +24,7 @@ class Profile(models.Model):
     registration = models.CharField(verbose_name="Matrícula", max_length=10, blank=True, null=True,)
     function = models.ForeignKey(Function, verbose_name="Cargo Efetivo", on_delete=models.PROTECT, related_name="Function", blank=True, null=True,)
     admission_date = models.DateField(verbose_name="Admissão", blank=True, null=True,)
-    cpf = models.CharField(max_length=14, verbose_name="CPF")
+    cpf = models.CharField(max_length=14, verbose_name="CPF", unique=True)
     phrase = models.CharField(max_length=250, verbose_name="Frase de Perfil", blank=True, null=True,)
     public = models.BooleanField(verbose_name="Perfil Público", default=True)
 
