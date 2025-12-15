@@ -179,7 +179,9 @@
                     <tbody>
                         {% for cert in object.certifications.all %}
                             <tr>
-                                <td>{{ cert.issue_date|date:"d/m/Y" }}</td>
+                                <td data-order="{{ cert.issue_date|date:"Ymd" }}">
+                                    {{ cert.issue_date|date:"d/m/Y" }}
+                                </td>
                                 <td>{{ cert.get_certification_type_display }}</td>
                                 <td>{{ cert.institution }}</td>
                                 <td>{{ cert.name }}</td>
