@@ -172,7 +172,7 @@
                             <th>Tipo</th>
                             <th>Instituição</th>
                             <th>Certificação</th>
-                            <th>CH</th>
+                            <th class="text-center">CH</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -183,7 +183,7 @@
                                 <td>{{ cert.get_certification_type_display }}</td>
                                 <td>{{ cert.institution }}</td>
                                 <td>{{ cert.name }}</td>
-                                <td>{{ cert.workload|default:"" }}</td>
+                                <td class="text-center ch-certificacao">{{ cert.workload|default:"" }}</td>
                                 <td class="text-end">
                                     {% if cert.file %}
                                         <a class="btn btn-sm btn-primary" href="{{ cert.file.url }}" target="_blank" title="Visualizar PDF">
@@ -208,6 +208,7 @@
                     </tbody>
                 </table>
             </div>
+            <p class="text-end small">Total de <span id="total-ch">0</span> horas em cursos informais.</p>
         {% else %}
             <p class="lead text-muted">
                 Nenhuma certificação cadastrada.
@@ -222,4 +223,5 @@
     <script src="{% static 'js/datatables/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'js/datatables/dataTables.bootstrap5.min.js' %}"></script>
     <script src="{% static 'js/datatables/conf.js' %}"></script>
+    <script src="{% static 'profiles/main.js' %}"></script>
 {% endblock script %}

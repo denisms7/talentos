@@ -58,11 +58,12 @@ INSTALLED_APPS = [
     "ckeditor",
 
     # APPs Proprios
-    'user',
-    'skills',
-    'profiles',
-    'creation',
+    'profiles.apps.ProfilesConfig',
+    'user.apps.UserConfig',
+    'skills.apps.SkillsConfig',
+    'creation.apps.CreationConfig',
 
+    # Apagar arquivos de mídia associados a modelos quando eles são excluídos ou substituídos
     "django_cleanup.apps.CleanupConfig",
 ]
 

@@ -36,13 +36,13 @@
     <table class="table table-sm table-striped table-hover align-middle">
         <thead class="table-primary">
             <tr>
-                <th>Nome</th>
-                <th>Função</th>
+                <th>Nome Completo</th>
+                <th>Cargo Efetivo</th>
                 <th class="text-center">Cursos</th>
                 <th class="text-center">Técnico</th>
                 <th class="text-center">Graduação</th>
-                <th class="text-center">PÓS/MBA</th>
-                <th class="text-center">Mestre/Doutor</th>
+                <th class="text-center">Pós/MBA</th>
+                <th class="text-center">Mestrado/Doutorado</th>
                 <th class="text-end"></th>
             </tr>
         </thead>
@@ -54,7 +54,7 @@
                     <td class="text-center">
                         {% if profile.course_count %}
                             <span class="badge bg-info">
-                                <i class="bi bi-mortarboard-fill"></i>
+                                <i class="bi bi-postcard-fill"></i>
                                 {{ profile.course_count }}
                             </span>
                         {% endif %}
