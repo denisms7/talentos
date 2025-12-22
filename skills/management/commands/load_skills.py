@@ -15,7 +15,9 @@ class Command(BaseCommand):
             ("Microsoft Outlook", SkillType.HARD),
             ("Microsoft Access", SkillType.HARD),
             ("Microsoft Publisher", SkillType.HARD),
-            ("Microsoft Teams", SkillType.HARD),
+
+            ("Microsoft Power BI", SkillType.HARD),
+            ("Microsoft Power Apps", SkillType.HARD),
 
             ("Uso e Manutenção Básica de Impressoras", SkillType.HARD),
 
